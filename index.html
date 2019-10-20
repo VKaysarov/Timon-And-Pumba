@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body {
+			margin: 0;
+		}
+	</style>
+</head>
+<body>
+	<div class="start"></div>
+	<canvas id="canvas"></canvas>
+</body>
+
+<script>
+	const canvas = document.getElementById('canvas');
+	const context = canvas.getContext('2d');
+	const width = canvas.width = window.innerWidth - 5;
+	const height = canvas.height = window.innerHeight - 5;
+
+	let count = 0; // Съедено гусениц
+
+// Таймер
+	let s = 0; // Минуты
+	let m = 0; // Секунды
+
+	setInterval(function() {
+		s++;
+		if (s == 59) {
+			m++;
+		}
+	}, 1000)
+
+	let bgImage = new Image();
+	bgImage.src = 'Media/Фоны/Jungle_AmazonMisha.png';
+
+	let Timon = {
+		width: 100,
+		height: 100, 
+		x: 10,
+		y: height - 330,
+		vx: 0, // Скорость персонажа по оси X
+		vy: 0, // Скорость персонажа по оси Y
+		g: 1, // Гравитация
+		hp: 100,
+		Frames: 9,
+		currentFrame: 0
+	}
+
+	let TimonImg = new Image()
+	TimonImg.src = 'Media/Спрайты король лев/GBA_LK1.5_timon.png'
+
+	let activeKey = [];
+
+	addEventListener('keydown', function(event) {
+			activeKey[event.code] = true;
+	})
+
+	addEventListener('keyup', function(event) {
+			activeKey[event.code] = false;
+	})
+
+
+
+	function update() {
+		if (activeKey['ArrowRight']) {
+			Timon.vx = 10;
+		}
+
+		if (activeKey['ArrowLeft']) {
+			Timon.vx = -10;
+		}
+
+		if (activeKey['ArrowUp']) {
+			Timon.vy = 20;
+		}
+		Timon.vx *= 0.9
+		Timon.x += Timon.vx;
+		Timon.y -= Timon.vy;
+		Timon.vy -= Timon.g
+
+
+
+
+
+
+	// Запрет выхода за пределы экрана
+		if (Timon.x < 0) {
+			Timon.x = 0;
+		}
+
+		if (Timon.x > width - Timon.width) {
+			Timon.x = width - Timon.width;
+		}
+		
+		// Пол
+		if (Timon.y > height - 300) { 
+			Timon.y = height - 300;   
+		}
+
+		// Потолок
+		if (Timon.y < height - 700) {
+			Timon.y = height - 700;
+			Timon.vy = 0;
+		}
+
+		if (activeKey['ArrowLeft'] || activeKey['ArrowRight']) {
+			if (Timon.currentFrame == Timon.Frames) {
+				Timon.currentFrame = 0;
+			} else {
+				Timon.currentFrame++;
+			}
+		}
+
+		if (activeKey[!'ArrowRight'] && activeKey[!'ArrowLeft']) {
+			Timon.currentFrame = 0;
+		}
+
+	}
+
+	function render() {
+		context.clearRect(0, 0, width, height);
+		context.beginPath();
+		context.drawImage(bgImage, 0, 0, width, height);
+		context.drawImage(bgImage, width, 0, width, height);
+
+		context.fillStyle = 'red';
+		context.fillRect(width - Timon.hp * 3 - 20, 20, Timon.hp * 3, 20);
+		console.log(Timon.currentFrame);
+		context.drawImage(TimonImg, 6 * Timon.currentFrame, 100, 25, 35, Timon.x, Timon.y, 25, 35);
+
+	}
+
+	function main() {
+		update()
+		render()
+
+		requestAnimationFrame(main)
+	}
+
+	main()
+</script>
+</html>
