@@ -7,18 +7,47 @@
 			margin: 0;
 			padding: 0;
 		}
+
+		#bootstrap {
+			position: absolute;
+		}
+
+		#pause {
+			display: none;
+			justify-content: center;
+			align-items: center;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			font-size: 30px;
+			color: #fff;
+			background-color: rgba(0, 0, 0, .5);
+		}
 	</style>
 </head>
 <body>
-	<!-- <input type="radio" name="hero" value="Timon"> -->
-	<!-- <input type="radio" name="hero" value="Pumba"> -->
+<!-- 	<div id="bootstrap">
+		<label for="Timon"><img src="Media/Тимон/Timon_1.png" width="200px"></label>
+		<input type="radio" name="hero" id="Timon">
+
+		<label for="Pumba"><img src="Media/Пумба/lion_king_PNG49.png" width="200px"></label>
+		<input type="radio" name="hero" id="Pumba">
+
+	</div> -->
+	<div id="pause">Пауза</div>
 	<canvas id="canvas"></canvas>
 
 	<script>
 		const canvas = document.getElementById('canvas');
 		const context = canvas.getContext('2d');
 		const width = canvas.width = window.innerWidth - 5;  
-		const height = canvas.height = window.innerHeight - 5;  
+		const height = canvas.height = window.innerHeight - 5;
+		const elementPause = document.getElementById('pause');
+
+		let pause = false;
+
+		let backgroundImg = new Image();
+		backgroundImg.src = 'Media/Фоны/1932758.png'
 
 		let Timon = {
 			hp: 100,
@@ -34,6 +63,7 @@
 			sprite: 95,
 			Img: new Image(),
 			jump: false,
+			digin: false
 		}
 
 		Timon.Img.src = 'Media/Спрайты король лев/Timon.png'
@@ -52,13 +82,14 @@
 			sprite: 0,
 			Img: new Image(),
 			jump: false,
+			digin: false
 		}
 
 		Pumba.Img.src = 'Media/Спрайты король лев/Pumba.png'
 
 		let Hyena = {
 			hp: 100,
-			x: 0,
+			x: -100,
 			y: 0,
 			vx: 0,
 			vy: 0,
@@ -72,15 +103,44 @@
 			jump: false,
 		}
 
-		let block = {
-			x: 500,
-			y: height - 300,
-			height: 50,
-			width: 100
-		}
-
 		Hyena.Img.src = 'Media/Спрайты король лев/Hyena.png'
 
+		let block = {
+			x: 0,
+			y: height - 300,
+			height: 50,
+			width: 100,
+			Img: new Image()
+		}
+
+		block.Img.src = 'Media/Гусеницы/land-vector-1.png'
+
+		blocks = []
+		for (let i = 0; i < 2; i++) {
+			console.log(blocks)
+			block.x = randomInteger(100, 1000);
+			blocks.push(block);
+		}
+
+		console.log(blocks)
+
+		let caterpillar = {
+			x: block.x,
+			y: height - 300 - block.height,
+			height: 50,
+			width: 100,
+			Img: new Image(),
+			hp: 100
+		}
+
+		caterpillar.Img.src = 'Media/Гусеницы/caterpillar003.png'
+
+		caterpillars = []
+		for (let i = 0; i < 2; i++) {
+			caterpillars.push(caterpillar)
+		}
+
+		console.log(caterpillars)
 		let count = 0;
 		let activeKey = [];
 
@@ -93,26 +153,41 @@
 		})
 
 		// function timer() {
-		// 	let s = 0;	
-		// 	let m = 0;
-		// 	setInterval(function() {
-		// 		if (s < 59) {
-		// 			s++;
-		// 		} else {
-		// 			m++
-		// 		}
-		// 	}, 1000)	
+		let s = 0;	
+		let m = 0;
+		setInterval(function() {
+			if (s < 59) {
+				s++;
+			} else {
+				s = 0;
+				m++;
+			}
+		}, 1000)	
 		// }
 
+		function randomInteger(min, max) {
+		  let rand = min + Math.random() * (max + 1 - min);
+		  return Math.floor(rand);
+		}
+
 		function update(hero) {
-			if (activeKey['ArrowLeft']) {
-				hero.vx = -10
-				hero.sprite = 95
+
+			if (activeKey['ArrowLeft'] && hero.digin == false) {
+				if (hero.x < block.x + block.width && hero.x > block.x && hero.y + hero.height > block.y ) {
+					hero.vx = 0
+				} else {
+					hero.vx = -10
+					hero.sprite = 95
+				}
 			}
 
-			if (activeKey['ArrowRight']) {
-				hero.vx = 10
-				hero.sprite = 95
+			if (activeKey['ArrowRight'] && hero.digin == false) {
+				if (hero.x + hero.width > block.x && hero.x < block.x - block.width / 2 && hero.y + hero.height > block.y) {
+					hero.vx = 0
+				} else {
+					hero.vx = 10
+					hero.sprite = 95
+				}
 			}
 
 			if (activeKey['ArrowUp']) {
@@ -120,6 +195,17 @@
 					hero.vy = -20
 					hero.sprite = 130
 					hero.jump = true
+				} else if (hero.digin == true) {
+					hero.y = height - 300
+					hero.digin = false
+				}
+			} 
+
+			if (activeKey['ArrowDown']) {
+				if (hero.digin == false) {
+					hero.vy = 10
+					hero.sprite = 130
+					hero.digin = true
 				}
 			} 
 
@@ -149,22 +235,29 @@
 				hero.x = width - hero.width                     
 			}
 
-			if (hero.y > height - 300) {
+			if (hero.y > height - 300 && hero.digin == false) {
 				hero.y = height - 300
 				hero.jump = false
 			}
 
-			// if (hero.x > block.x && hero.x < block.x + block.width && hero.y > block.y - hero.height) {
-			// 	hero.y = block.y - hero.height
-			// }
-
-			if (hero.x + hero.width > block.x && hero.y == block.y && hero.x < block.x - block.width / 2) {
-				hero.x = block.x - hero.width
+			if (hero.x + hero.width > block.x && hero.x < block.x + block.width && hero.y > block.y - hero.height && hero.y < block.y) {
+				hero.y = block.y - hero.height;
+				hero.vy -= 1;
+				hero.jump = false;
+				if (hero.x + hero.width > caterpillar.x && hero.x < caterpillar.x + caterpillar.width && caterpillar.hp == 100) {
+					count++;
+					caterpillar.hp -= 100;
+					if (hero.hp <= 95) {
+						hero.hp += 5;
+					}
+				}
 			}
 
-			if (hero.x < block.x + block.width && hero.y == block.y &&  ) {
-				hero.x = block.x + block.width
-			}
+			if (activeKey['Escape'] && pause == false) {
+				elementPause.style.display = 'flex';
+				pause = true;
+				console.log('x')
+			} 
 
 		}
 
@@ -172,24 +265,65 @@
 			context.clearRect(0, 0, width, height);
 
 			context.beginPath();
+				context.drawImage(backgroundImg, 0, 0, 5000, height);
+			context.closePath();
+
+		// Персонаж
+			context.beginPath();
 			
-			// context.drawImage(hero.Img, 31 * hero.currentFrame, hero.sprite, 25, 35, hero.x, hero.y, 50, 50)
-			// console.log(hero.currentFrame)
-			context.fillStyle = 'red';
-			context.fillRect(width - 310, 10, hero.hp * 3, 10);
-			context.fillRect(hero.x, hero.y, hero.width, hero.height);
+				// context.drawImage(hero.Img, 31 * hero.currentFrame, hero.sprite, 25, 35, hero.x, hero.y, 50, 50)
+				// console.log(hero.currentFrame)
+				context.fillStyle = 'red';
+				context.fillRect(width - 310, 10, hero.hp * 3, 15);
+				if (hero.y < height - 100) {
+					context.fillRect(hero.x, hero.y, hero.width, hero.height);
+				}
+			context.closePath();
+
+		// Возвышенность
+			context.beginPath();
+				blocks.forEach(function(block) {
+					context.fillStyle = 'black';
+					context.fillRect(block.x, block.y, block.width, block.height)
+				})
+			context.closePath();
+
+
+		// Гусеница
+			context.beginPath();
+				caterpillars.forEach(function(caterpillar) {
+					if (caterpillar.hp == 100) {
+						context.drawImage(caterpillar.Img, caterpillar.x, caterpillar.y, caterpillar.width, caterpillar.height);
+					}
+				})
 			context.closePath();
 
 			context.beginPath();
-			context.fillStyle = 'black';
-			context.fillRect(block.x, block.y, block.width, block.height)
+				context.font = '22px Verdana';
+				context.fillText('Счет: ' + count, 10, 30);
+				context.fillText('Время: ' + m + ':' + s, 10, 50);
 			context.closePath();
 
+		// Гиена
+			context.beginPath();
+				blocks.forEach(function(block) {
+					context.fillStyle = 'yellow';
+					context.fillRect(Hyena.x, Hyena.y, Hyena.width, Hyena.height)
+				})
+			context.closePath();
 			
 		}
 
 		function main() {
-			update(Timon)
+			if (pause == false) {
+				update(Timon)
+			} else {
+				if (activeKey['Escape']) {
+					elementPause.style.display = 'none';
+					pause = false;
+				}
+			}
+
 			render(Timon)
 
 			requestAnimationFrame(main)
