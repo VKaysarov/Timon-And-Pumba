@@ -7,11 +7,14 @@
 			margin: 0;
 			padding: 0;
 		}
-
 		form {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
+		}
+
+		ul {
+			list-style-type: none;
 		}
 
 		#bootstrap {
@@ -24,9 +27,9 @@
 			background-color: rgba(0, 0, 0, .5);
 			z-index: 5;
 		}
-
-		#pause {
+		#pause, #gameover {
 			display: none;
+			flex-direction: column;
 			justify-content: center;
 			align-items: center;
 			position: absolute;
@@ -39,40 +42,57 @@
 	</style>
 </head>
 <body>
-<!-- 	<div id="bootstrap">
+	<div id="bootstrap">
 		<div>
 			<label for="Timon"><img src="Media/Тимон/Timon_1.png" alt="Timon" width="200px"></label>
 			<input type="radio" name="hero" id="Timon">
-
 			<label for="Pumba"><img src="Media/Пумба/lion_king_PNG49.png" alt="Pumba" width="200px"></label>
 			<input type="radio" name="hero" id="Pumba">
-
 			<form>
 				<label for="name">Введите ваше имя:</label>
 				<input type="text" name="name" id="name">
 				<button type="button" id="start" onclick="main()" disabled="true">Начать</button>
 			</form>
 		</div>
-	</div> -->
+	</div>
 	<div id="pause">Пауза</div>
+	<div id="gameover">
+		<h2>Конец игры</h2>
+		<ul>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+		<form>
+			<button>Начать зново</button>
+		</form>
+	</div>	
 	<canvas id="canvas"></canvas>
 
 	<script>
 		const canvas = document.getElementById('canvas');
 		const context = canvas.getContext('2d');
-		const width = canvas.width = window.innerWidth - 5;  
-		const height = canvas.height = window.innerHeight - 5;
-		const elementPause = document.getElementById('pause');
 		const elementTimon = document.getElementById('Timon');
 		const elementPumba = document.getElementById('Pumba');
+		const elementPause = document.getElementById('pause');
+		const elementGameover = document.getElementById('gameover');
 		const name = document.getElementById('name');
 		const buttonStart = document.getElementById('start');
-
+		const bootstrap = document.getElementById('bootstrap');
+		let width = canvas.width = window.innerWidth - 5;  
+		let height = canvas.height = window.innerHeight - 5;
 		let pause = false;
-
+		let gameover = false;
 		let backgroundImg = new Image();
 		backgroundImg.src = 'Media/Фоны/1932758.png'
-
 		let Timon = {
 			hp: 100,
 			x: 0,
@@ -89,9 +109,7 @@
 			jump: false,
 			digin: false
 		}
-
 		Timon.Img.src = 'Media/Спрайты король лев/Timon.png'
-
 		let Pumba = {
 			hp: 100,
 			x: 0,
@@ -108,9 +126,7 @@
 			jump: false,
 			digin: false
 		}
-
 		Pumba.Img.src = 'Media/Спрайты король лев/Pumba.png'
-
 		let Hyena = {
 			hp: 100,
 			x: -100,
@@ -126,27 +142,20 @@
 			Img: new Image(),
 			jump: false,
 		}
-
 		Hyena.Img.src = 'Media/Спрайты король лев/Hyena.png'
 
-		let block = {
-			x: 0,
-			y: height - 300,
-			height: 50,
-			width: 100,
-			Img: new Image()
-		}
-
-		block.Img.src = 'Media/Гусеницы/land-vector-1.png'
-
 		blocks = []
-
 		for (let i = 0; i < 2; i++) {
-			console.log(blocks)
-			block.x = randomInteger(100, 1000);
+			block = {
+				x: randomInteger(100, 1000),
+				y: height - 300,
+				height: 50,
+				width: 100,
+				Img: new Image()
+			}
+			block.Img.src = 'Media/Гусеницы/land-vector-1.png'
 			blocks.push(block);
 		}
-
 		let caterpillar = {
 			x: block.x,
 			y: height - 300 - block.height,
@@ -155,97 +164,111 @@
 			Img: new Image(),
 			hp: 100
 		}
-
 		caterpillar.Img.src = 'Media/Гусеницы/caterpillar003.png'
-
 		caterpillars = []
-
 		for (let i = 0; i < 2; i++) {
 			caterpillars.push(caterpillar)
 		}
-
 		let count = 0;
-
 		let activeKey = [];
+
+		addEventListener('resize', function() {
+			width = canvas.width = window.innerWidth - 5;  
+			height = canvas.height = window.innerHeight - 5;
+		})
 
 		addEventListener('keydown', function(event) {
 			activeKey[event.code] = true;
 		})
-
 		addEventListener('keyup', function(event) {
 			activeKey[event.code] = false;
 		})
+		name.addEventListener('input', function() {
+			if (name.value == '') {
+				buttonStart.disabled = true;
+			} else {
+				buttonStart.disabled = false;
+			}
+		})
 
-		// name.addEventListener('input', function() {
-		// 	if (name.value == '') {
-		// 		buttonStart.disabled = true;
-		// 	} else {
-		// 		buttonStart.disabled = false;
-		// 	}
-		// })
+		buttonStart.addEventListener('click', function() {
+			bootstrap.style.display = 'none';
+			main();
+		})
 
-		// async function timer() {
-			// let s = 0;	
-			// let m = 0;
-			// setInterval(function() {
-			// 	if (s < 59) {
-			// 		s++;
-			// 	} else {
-			// 		s = 0;
-			// 		m++;
-			// 	}
-
-			// 	her
-			// }, 1000)	
-		// }
 		let s = 0;	
 		let m = 0;
+		let timer = false;
 
 		function randomInteger(min, max) {
 		  let rand = min + Math.random() * (max + 1 - min);
 		  return Math.floor(rand);
 		}
 
-		const delay = ms => {
-			return new Promise(r => setTimeout(() => r(), ms))
-		}
-
-		function timer() {
-			delay(2000).then(() => {
-				if (s < 59) {
-					s++;
-				} else {
-					s = 0;
-					m++;
-				}
-			})
-		}
-
-		timer()
-
 		activeKey['Escape'] = ''
-
 		function update(hero) {
-
-			if (activeKey['ArrowLeft'] && hero.digin == false) {
-				if (hero.x < block.x + block.width && hero.x > block.x && hero.y + hero.height > block.y ) {
-					hero.vx = 0
+			if (timer == false) {
+				if (pause == false) {
+					setInterval(function() {
+						if (s < 59) {
+							s++;
+						} else {
+							s = 0;
+							m++;
+						}
+						if (hero.hp > 1) {
+							hero.hp--;
+						} else {
+							gameover = true;
+						}
+					}, 1000)	
+					timer = true;
 				} else {
-					hero.vx = -10
-					hero.sprite = 95
+					timer = false
 				}
 			}
 
-			if (activeKey['ArrowRight'] && hero.digin == false) {
-				if (hero.x + hero.width > block.x && hero.x < block.x - block.width / 2 && hero.y + hero.height > block.y) {
-					hero.vx = 0
-					// if (hero.x ) {}
-				} else {
-					hero.vx = 10
-					hero.sprite = 95
+				
+				if (activeKey['ArrowLeft'] && hero.digin == false) {
+						
+			blocks.forEach(function(block) {
+					if (hero.x < block.x + block.width && hero.x > block.x && hero.y + hero.height > block.y ) {
+						hero.vx = 0
+					} else {
+						hero.vx = -10
+						hero.sprite = 95
+					}
+			})
 				}
-			}
 
+				if (activeKey['ArrowRight'] && hero.digin == false) {
+			blocks.forEach(function(block) {
+					if (hero.x + hero.width > block.x && hero.x < block.x - block.width / 2 && hero.y + hero.height > block.y) {
+						hero.vx = 0
+						console.log(hero.vx)
+					} else {
+						hero.vx = 10
+						hero.sprite = 95
+					}
+			})
+				}
+
+			// Запрыгивание на возвышенность
+				if (hero.x + hero.width > block.x && hero.x < block.x + block.width && hero.y > block.y - hero.height && hero.y < block.y) {
+					hero.y = block.y - hero.height;
+					hero.vy -= 1;
+					hero.jump = false;
+					hero.digin = false;
+				// Поедание гусеницы
+					if (hero.x + hero.width > caterpillar.x && hero.x < caterpillar.x + caterpillar.width && caterpillar.hp == 100) {
+						count++;
+						caterpillar.hp -= 100;
+						if (hero.hp <= 95) {
+							hero.hp += 5;
+						}
+					}
+				}
+		// Прыжок
 			if (activeKey['ArrowUp']) {
 				if (hero.jump == false) {
 					hero.vy = -20
@@ -264,7 +287,6 @@
 					hero.digin = true
 				}
 			} 
-
 			if (activeKey['ArrowLeft'] || activeKey['ArrowRight'] || activeKey['ArrowUp']) {
 				if (hero.speedAnim < 5) {
 					hero.speedAnim++;
@@ -277,54 +299,31 @@
 					}
 				}
 			}
-
 			hero.vx *= 0.9;
 			hero.x += hero.vx;
 			hero.y += hero.vy;
-			hero.vy += 1;
-
+			hero.vy += 1; // Гравитация
 			if (hero.x < 0) {
 				hero.x = 0
 			}
-
 			if (hero.x > width - hero.width) {
 				hero.x = width - hero.width                     
 			}
-
 			if (hero.y > height - 300 && hero.digin == false) {
 				hero.y = height - 300
 				hero.jump = false
 			}
-
-			if (hero.x + hero.width > block.x && hero.x < block.x + block.width && hero.y > block.y - hero.height && hero.y < block.y) {
-				hero.y = block.y - hero.height;
-				hero.vy -= 1;
-				hero.jump = false;
-				if (hero.x + hero.width > caterpillar.x && hero.x < caterpillar.x + caterpillar.width && caterpillar.hp == 100) {
-					count++;
-					caterpillar.hp -= 100;
-					if (hero.hp <= 95) {
-						hero.hp += 5;
-					}
-				}
-			}
-
-
 			if (activeKey['Escape'] != '' && pause == false) {
 				elementPause.style.display = 'flex';
 				pause = true;
 				activeKey['Escape'] = '';
-			} 
-
+			}
 		}
-
 		function render(hero) {
 			context.clearRect(0, 0, width, height);
-
 			context.beginPath();
 				context.drawImage(backgroundImg, 0, 0, 5000, height);
 			context.closePath();
-
 		// Персонаж
 			context.beginPath();
 			
@@ -336,16 +335,15 @@
 					context.fillRect(hero.x, hero.y, hero.width, hero.height);
 				}
 			context.closePath();
-
 		// Возвышенность
 			context.beginPath();
 				blocks.forEach(function(block) {
-					context.fillStyle = 'black';
-					context.fillRect(block.x, block.y, block.width, block.height)
+					// context.fillStyle = 'black';
+					// context.fillRect(block.x, block.y, block.width, block.height)
+					context.drawImage(block.Img, block.x, block.y, block.width, block.height);
+					
 				})
 			context.closePath();
-
-
 		// Гусеница
 			context.beginPath();
 				caterpillars.forEach(function(caterpillar) {
@@ -354,26 +352,27 @@
 					}
 				})
 			context.closePath();
-
 			context.beginPath();
+				context.fillStyle = 'black';
 				context.font = '22px Verdana';
 				context.fillText('Счет: ' + count, 10, 30);
 				context.fillText('Время: ' + m + ':' + s, 10, 50);
 			context.closePath();
-
 		// Гиена
-			context.beginPath();
-				blocks.forEach(function(block) {
-					context.fillStyle = 'yellow';
-					context.fillRect(Hyena.x, Hyena.y, Hyena.width, Hyena.height)
-				})
-			context.closePath();
+			// context.beginPath();
+			// 	blocks.forEach(function(block) {
+			// 		context.fillStyle = 'yellow';
+			// 		context.fillRect(Hyena.x, Hyena.y, Hyena.width, Hyena.height)
+			// 	})
+			// context.closePath();
 			
 		}
-
 		function main() {
-			if (pause == false) {
+			if (pause == false && gameover == false) {
 				update(Timon)
+			} else if (gameover == true) {
+				elementGameover.style.display = 'flex';
+
 			} else {
 				if (activeKey['Escape'] != '') {
 					elementPause.style.display = 'none';
@@ -381,14 +380,11 @@
 					activeKey['Escape'] = '';
 				}
 			}
-			// console.log(activeKey['Escape'])
-			// console.log(pause)
+	
 			render(Timon)
-
 			requestAnimationFrame(main)
 		}
-
-		main()
+		// main()
 	</script>
 </body>
 </html>
