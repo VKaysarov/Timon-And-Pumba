@@ -1,15 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Game</title>
 	<style type="text/css">
 		body {
 			margin: 0;
 			padding: 0;
 		}
 
+		form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
 		#bootstrap {
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			position: absolute;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, .5);
+			z-index: 5;
 		}
 
 		#pause {
@@ -27,12 +40,19 @@
 </head>
 <body>
 <!-- 	<div id="bootstrap">
-		<label for="Timon"><img src="Media/Тимон/Timon_1.png" width="200px"></label>
-		<input type="radio" name="hero" id="Timon">
+		<div>
+			<label for="Timon"><img src="Media/Тимон/Timon_1.png" alt="Timon" width="200px"></label>
+			<input type="radio" name="hero" id="Timon">
 
-		<label for="Pumba"><img src="Media/Пумба/lion_king_PNG49.png" width="200px"></label>
-		<input type="radio" name="hero" id="Pumba">
+			<label for="Pumba"><img src="Media/Пумба/lion_king_PNG49.png" alt="Pumba" width="200px"></label>
+			<input type="radio" name="hero" id="Pumba">
 
+			<form>
+				<label for="name">Введите ваше имя:</label>
+				<input type="text" name="name" id="name">
+				<button type="button" id="start" onclick="main()" disabled="true">Начать</button>
+			</form>
+		</div>
 	</div> -->
 	<div id="pause">Пауза</div>
 	<canvas id="canvas"></canvas>
@@ -43,6 +63,10 @@
 		const width = canvas.width = window.innerWidth - 5;  
 		const height = canvas.height = window.innerHeight - 5;
 		const elementPause = document.getElementById('pause');
+		const elementTimon = document.getElementById('Timon');
+		const elementPumba = document.getElementById('Pumba');
+		const name = document.getElementById('name');
+		const buttonStart = document.getElementById('start');
 
 		let pause = false;
 
@@ -116,13 +140,12 @@
 		block.Img.src = 'Media/Гусеницы/land-vector-1.png'
 
 		blocks = []
+
 		for (let i = 0; i < 2; i++) {
 			console.log(blocks)
 			block.x = randomInteger(100, 1000);
 			blocks.push(block);
 		}
-
-		console.log(blocks)
 
 		let caterpillar = {
 			x: block.x,
@@ -136,12 +159,13 @@
 		caterpillar.Img.src = 'Media/Гусеницы/caterpillar003.png'
 
 		caterpillars = []
+
 		for (let i = 0; i < 2; i++) {
 			caterpillars.push(caterpillar)
 		}
 
-		console.log(caterpillars)
 		let count = 0;
+
 		let activeKey = [];
 
 		addEventListener('keydown', function(event) {
@@ -152,23 +176,54 @@
 			activeKey[event.code] = false;
 		})
 
-		// function timer() {
+		// name.addEventListener('input', function() {
+		// 	if (name.value == '') {
+		// 		buttonStart.disabled = true;
+		// 	} else {
+		// 		buttonStart.disabled = false;
+		// 	}
+		// })
+
+		// async function timer() {
+			// let s = 0;	
+			// let m = 0;
+			// setInterval(function() {
+			// 	if (s < 59) {
+			// 		s++;
+			// 	} else {
+			// 		s = 0;
+			// 		m++;
+			// 	}
+
+			// 	her
+			// }, 1000)	
+		// }
 		let s = 0;	
 		let m = 0;
-		setInterval(function() {
-			if (s < 59) {
-				s++;
-			} else {
-				s = 0;
-				m++;
-			}
-		}, 1000)	
-		// }
 
 		function randomInteger(min, max) {
 		  let rand = min + Math.random() * (max + 1 - min);
 		  return Math.floor(rand);
 		}
+
+		const delay = ms => {
+			return new Promise(r => setTimeout(() => r(), ms))
+		}
+
+		function timer() {
+			delay(2000).then(() => {
+				if (s < 59) {
+					s++;
+				} else {
+					s = 0;
+					m++;
+				}
+			})
+		}
+
+		timer()
+
+		activeKey['Escape'] = ''
 
 		function update(hero) {
 
@@ -184,6 +239,7 @@
 			if (activeKey['ArrowRight'] && hero.digin == false) {
 				if (hero.x + hero.width > block.x && hero.x < block.x - block.width / 2 && hero.y + hero.height > block.y) {
 					hero.vx = 0
+					// if (hero.x ) {}
 				} else {
 					hero.vx = 10
 					hero.sprite = 95
@@ -253,10 +309,11 @@
 				}
 			}
 
-			if (activeKey['Escape'] && pause == false) {
+
+			if (activeKey['Escape'] != '' && pause == false) {
 				elementPause.style.display = 'flex';
 				pause = true;
-				console.log('x')
+				activeKey['Escape'] = '';
 			} 
 
 		}
@@ -318,12 +375,14 @@
 			if (pause == false) {
 				update(Timon)
 			} else {
-				if (activeKey['Escape']) {
+				if (activeKey['Escape'] != '') {
 					elementPause.style.display = 'none';
 					pause = false;
+					activeKey['Escape'] = '';
 				}
 			}
-
+			// console.log(activeKey['Escape'])
+			// console.log(pause)
 			render(Timon)
 
 			requestAnimationFrame(main)
