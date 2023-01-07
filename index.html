@@ -12,11 +12,9 @@
 			flex-direction: column;
 			align-items: center;
 		}
-
 		ul {
 			list-style-type: none;
 		}
-
 		#bootstrap {
 			display: flex;
 			align-items: center;
@@ -51,7 +49,7 @@
 			<form>
 				<label for="name">Введите ваше имя:</label>
 				<input type="text" name="name" id="name">
-				<button type="button" id="start" onclick="main()" disabled="true">Начать</button>
+				<button type="button" id="start" disabled="true">Начать</button>
 			</form>
 		</div>
 	</div>
@@ -87,12 +85,22 @@
 		const name = document.getElementById('name');
 		const buttonStart = document.getElementById('start');
 		const bootstrap = document.getElementById('bootstrap');
+		const debug = true;
 		let width = canvas.width = window.innerWidth - 5;  
 		let height = canvas.height = window.innerHeight - 5;
 		let pause = false;
 		let gameover = false;
-		let backgroundImg = new Image();
-		backgroundImg.src = 'Media/Фоны/1932758.png'
+
+		let background = {
+			x: 0,
+			y: 0,
+			vx: 0,
+			width: 5000,
+			height: height,
+			Img: new Image()
+		};
+		// backgroundImg = new Image()
+		background.Img.src = 'Media/Фоны/1932758.png'
 		let Timon = {
 			hp: 100,
 			x: 0,
@@ -107,7 +115,8 @@
 			sprite: 95,
 			Img: new Image(),
 			jump: false,
-			digin: false
+			digin: false,
+			direction: 0,
 		}
 		Timon.Img.src = 'Media/Спрайты король лев/Timon.png'
 		let Pumba = {
@@ -144,39 +153,52 @@
 		}
 		Hyena.Img.src = 'Media/Спрайты король лев/Hyena.png'
 
-		blocks = []
+		let randomPosition = []
+		for (var i = 100; i < 5000; i+=100) {
+			randomPosition.push(i);
+		}
+
+		let blocks = []
 		for (let i = 0; i < 2; i++) {
-			block = {
-				x: randomInteger(100, 1000),
+			let block = {
+				x: 0,
 				y: height - 300,
+				vx: 0,
 				height: 50,
 				width: 100,
 				Img: new Image()
 			}
+			let x = randomInteger(0, 4)
+			if (i > 0) {
+				while (blocks[i - 1].x == randomPosition[x]) {
+					x = randomInteger(0, 4)
+				}
+			}
+			block.x = randomPosition[x]
 			block.Img.src = 'Media/Гусеницы/land-vector-1.png'
 			blocks.push(block);
+			console.log(blocks[i])
 		}
-		let caterpillar = {
-			x: block.x,
-			y: height - 300 - block.height,
-			height: 50,
-			width: 100,
-			Img: new Image(),
-			hp: 100
-		}
-		caterpillar.Img.src = 'Media/Гусеницы/caterpillar003.png'
-		caterpillars = []
+		
+		let caterpillars = []
 		for (let i = 0; i < 2; i++) {
-			caterpillars.push(caterpillar)
+			let caterpillar = {
+				x: blocks[i].x,
+				y: height - 300 - blocks[i].height,
+				height: 50,
+				width: 100,
+				Img: new Image(),
+				hp: 100
+			}
+			caterpillar.Img.src = 'Media/Гусеницы/caterpillar003.png'
+			caterpillars.push(caterpillar);
 		}
 		let count = 0;
 		let activeKey = [];
-
 		addEventListener('resize', function() {
 			width = canvas.width = window.innerWidth - 5;  
 			height = canvas.height = window.innerHeight - 5;
 		})
-
 		addEventListener('keydown', function(event) {
 			activeKey[event.code] = true;
 		})
@@ -190,27 +212,83 @@
 				buttonStart.disabled = false;
 			}
 		})
-
 		buttonStart.addEventListener('click', function() {
 			bootstrap.style.display = 'none';
 			main();
 		})
-
 		let s = 0;	
 		let m = 0;
 		let timer = false;
 
 		function randomInteger(min, max) {
-		  let rand = min + Math.random() * (max + 1 - min);
+		  let rand = min + Math.random() * (max + 1 - min) ;
 		  return Math.floor(rand);
 		}
-
+		// function chooseBlockPosition(){
+		// 	let x = randomInteger(0, );
+		// 	let allowed = true;
+		// 	if(blocks.length > 0){
+		// 		blocks.forEach(block => {
+		// 			if(block.x + block.width < x && 
+		// 				block.x > x + 100){
+		// 				allowed = false;
+		// 			}
+		// 		})
+		// 	}
+		// 	if(allowed){
+		// 		return x;
+		// 	}else{
+		// 		chooseBlockPosition();
+		// 	}
+		// }
 		activeKey['Escape'] = ''
+
+		let currentTime = Date.now();
+
+		function collisions(block1, block2) {
+			if(block1.x + block1.width >= block2.x &&
+				block1.x <= block2.x + block2.width &&
+				block1.y + block1.height >= block2.y &&
+				block1.y <= block2.y + block2.height){
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		function handleConllision(block1, block2){
+			if(block1.y >= height - 300){
+				if(block1.x + block1.width >= block2.x && block1.direction == "right"){
+					block1.x = block2.x - block1.width - 1;
+					block1.vx = 0;
+				}
+				if(block1.x < block2.x + block2.width && block1.direction == "left"){
+					block1.x = block2.x + block2.width + 1;
+					block1.vx = 0;
+				}
+			}
+			if(block1.y + block1.height >= block2.y && block1.y < block2.y){
+				block1.y = block2.y - block1.height;
+				block1.jump = false;
+			}
+
+			caterpillars.forEach(caterpillar=>{
+
+				if (block1.x + block1.width > caterpillar.x && block1.x < caterpillar.x + caterpillar.width && caterpillar.hp == 100) {
+					count++;
+					caterpillar.hp -= 100;
+					if (block1.hp <= 95) {
+						block1.hp += 5;
+					}
+				}
+			})
+		}
+
 		function update(hero) {
-			if (timer == false) {
-				if (pause == false) {
-					setInterval(function() {
-						if (s < 59) {
+			if(timer == false){
+				if(Date.now() - currentTime >= 1000){
+					currentTime = Date.now();
+					if (s < 59) {
 							s++;
 						} else {
 							s = 0;
@@ -221,53 +299,42 @@
 						} else {
 							gameover = true;
 						}
-					}, 1000)	
-					timer = true;
-				} else {
-					timer = false
 				}
 			}
-
-				
 				if (activeKey['ArrowLeft'] && hero.digin == false) {
-						
-			blocks.forEach(function(block) {
-					if (hero.x < block.x + block.width && hero.x > block.x && hero.y + hero.height > block.y ) {
+					if (hero.x <= width/2 && background.x < 0) {
+						blocks.forEach(block=>{
+							block.x += 10;
+						})
+						caterpillars.forEach(caterpillar=>{
+							caterpillar.x += 10;
+						})
 						hero.vx = 0
+						background.x += 10
 					} else {
 						hero.vx = -10
 						hero.sprite = 95
 					}
-			})
+					hero.direction = "left";
 				}
-
 				if (activeKey['ArrowRight'] && hero.digin == false) {
-			blocks.forEach(function(block) {
-					if (hero.x + hero.width > block.x && hero.x < block.x - block.width / 2 && hero.y + hero.height > block.y) {
+					if (hero.x + hero.width >= width/2) {
+						blocks.forEach(block=>{
+							block.x -= 10;
+						})
+						caterpillars.forEach(caterpillar=>{
+							caterpillar.x -= 10;
+						})
+						background.x -= 10
 						hero.vx = 0
-						console.log(hero.vx)
 					} else {
 						hero.vx = 10
 						hero.sprite = 95
 					}
-			})
+					hero.direction = "right";
+					
 				}
 
-			// Запрыгивание на возвышенность
-				if (hero.x + hero.width > block.x && hero.x < block.x + block.width && hero.y > block.y - hero.height && hero.y < block.y) {
-					hero.y = block.y - hero.height;
-					hero.vy -= 1;
-					hero.jump = false;
-					hero.digin = false;
-				// Поедание гусеницы
-					if (hero.x + hero.width > caterpillar.x && hero.x < caterpillar.x + caterpillar.width && caterpillar.hp == 100) {
-						count++;
-						caterpillar.hp -= 100;
-						if (hero.hp <= 95) {
-							hero.hp += 5;
-						}
-					}
-				}
 		// Прыжок
 			if (activeKey['ArrowUp']) {
 				if (hero.jump == false) {
@@ -279,7 +346,6 @@
 					hero.digin = false
 				}
 			} 
-
 			if (activeKey['ArrowDown']) {
 				if (hero.digin == false) {
 					hero.vy = 10
@@ -302,7 +368,19 @@
 			hero.vx *= 0.9;
 			hero.x += hero.vx;
 			hero.y += hero.vy;
-			hero.vy += 1; // Гравитация
+			// hero.vy += 1; // Гравитация
+			// console.log(hero.direction);
+
+			blocks.forEach(block=>{
+				let collides = collisions(hero, block);
+				if(collides){
+					handleConllision(hero, block);
+				}
+			});
+			if(hero.jump){
+				hero.vy += 1; // Гравитация
+				hero.direction = "bottom";
+			}
 			if (hero.x < 0) {
 				hero.x = 0
 			}
@@ -322,7 +400,7 @@
 		function render(hero) {
 			context.clearRect(0, 0, width, height);
 			context.beginPath();
-				context.drawImage(backgroundImg, 0, 0, 5000, height);
+				context.drawImage(background.Img, background.x, background.y, background.width, height);
 			context.closePath();
 		// Персонаж
 			context.beginPath();
@@ -338,9 +416,14 @@
 		// Возвышенность
 			context.beginPath();
 				blocks.forEach(function(block) {
-					// context.fillStyle = 'black';
-					// context.fillRect(block.x, block.y, block.width, block.height)
-					context.drawImage(block.Img, block.x, block.y, block.width, block.height);
+					if(debug){
+						context.strokeStyle="red";
+						context.rect(block.x, block.y, block.width, block.height);
+						context.stroke();
+					}
+					context.fillStyle = 'black';
+					context.fillRect(block.x, block.y, block.width, block.height)
+					// context.drawImage(block.Img, block.x, block.y, block.width, block.height);
 					
 				})
 			context.closePath();
@@ -372,7 +455,6 @@
 				update(Timon)
 			} else if (gameover == true) {
 				elementGameover.style.display = 'flex';
-
 			} else {
 				if (activeKey['Escape'] != '') {
 					elementPause.style.display = 'none';
@@ -384,7 +466,7 @@
 			render(Timon)
 			requestAnimationFrame(main)
 		}
-		// main()
+		
 	</script>
 </body>
 </html>
