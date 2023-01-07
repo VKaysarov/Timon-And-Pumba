@@ -14,8 +14,7 @@ let pause = false;
 let gameover = false;
 
 let background = {
-    x: 0,
-    y: 0,
+    ...PositionComponent,
     vx: 0,
     width: 5000,
     height: height,
@@ -24,9 +23,8 @@ let background = {
 // backgroundImg = new Image()
 background.Img.src = 'Media/Фоны/1932758.png'
 let Timon = {
+    ...PositionComponent,
     hp: 100,
-    x: 0,
-    y: height - 300,
     vx: 0,
     vy: 0,
     height: 100,
@@ -42,9 +40,8 @@ let Timon = {
 }
 Timon.Img.src = 'Media/Спрайты король лев/Timon.png'
 let Pumba = {
+    ...PositionComponent,
     hp: 100,
-    x: 0,
-    y: 0,
     vx: 0,
     vy: 0,
     height: 80,
@@ -59,9 +56,8 @@ let Pumba = {
 }
 Pumba.Img.src = 'Media/Спрайты король лев/Pumba.png'
 let Hyena = {
+    ...PositionComponent,
     hp: 100,
-    x: -100,
-    y: 0,
     vx: 0,
     vy: 0,
     height: 100,
@@ -290,7 +286,7 @@ function update(hero) {
     hero.vx *= 0.9;
     hero.x += hero.vx;
     hero.y += hero.vy;
-    // hero.vy += 1; // Гравитация
+    hero.vy += 1; // Гравитация
     // console.log(hero.direction);
 
     blocks.forEach(block=>{
@@ -374,7 +370,7 @@ function render(hero) {
 }
 function main() {
     if (pause == false && gameover == false) {
-        update(Timon)
+        update(Pumba)
     } else if (gameover == true) {
         elementGameover.style.display = 'flex';
     } else {
@@ -385,6 +381,6 @@ function main() {
         }
     }
 
-    render(Timon)
+    render(Pumba)
     requestAnimationFrame(main)
 }
