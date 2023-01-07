@@ -14,16 +14,16 @@ let pause = false;
 let gameover = false;
 
 let background = {
-    ...PositionComponent,
+    PositionComponent: PositionComponent(),
+    AppearanceComponent: AppearanceComponent(),
     vx: 0,
     width: 5000,
     height: height,
-    Img: new Image()
 };
-// backgroundImg = new Image()
-background.Img.src = 'Media/Фоны/1932758.png'
+background.AppearanceComponent.img.src = 'Media/Фоны/1932758.png'
 let Timon = {
-    ...PositionComponent,
+    PositionComponent: PositionComponent(0, height - 300),
+    AppearanceComponent: AppearanceComponent(),
     hp: 100,
     vx: 0,
     vy: 0,
@@ -33,14 +33,14 @@ let Timon = {
     currentFrame: 0,
     speedAnim: 0,
     sprite: 95,
-    Img: new Image(),
     jump: false,
     digin: false,
     direction: 0,
 }
-Timon.Img.src = 'Media/Спрайты король лев/Timon.png'
+Timon.AppearanceComponent.img.src = 'Media/sprites/TimonTLK.png'
 let Pumba = {
-    ...PositionComponent,
+    PositionComponent: PositionComponent(),
+    AppearanceComponent: AppearanceComponent(),
     hp: 100,
     vx: 0,
     vy: 0,
@@ -50,13 +50,13 @@ let Pumba = {
     currentFrame: 0,
     speedAnim: 0,
     sprite: 0,
-    Img: new Image(),
     jump: false,
     digin: false
 }
-Pumba.Img.src = 'Media/Спрайты король лев/Pumba.png'
+Pumba.AppearanceComponent.img.src = 'Media/sprites/PumbaTLK.png'
 let Hyena = {
-    ...PositionComponent,
+    PositionComponent: PositionComponent(),
+    AppearanceComponent: AppearanceComponent(),
     hp: 100,
     vx: 0,
     vy: 0,
@@ -66,10 +66,9 @@ let Hyena = {
     currentFrame: 0,
     speedAnim: 0,
     sprite: 0,
-    Img: new Image(),
     jump: false,
 }
-Hyena.Img.src = 'Media/Спрайты король лев/Hyena.png'
+Hyena.AppearanceComponent.img.src = 'Media/sprites/Hyenas.png'
 
 let randomPosition = []
 for (var i = 100; i < 5000; i+=100) {
@@ -77,38 +76,35 @@ for (var i = 100; i < 5000; i+=100) {
 }
 
 let blocks = []
-for (let i = 0; i < 2; i++) {
+for (let i = 0; i < 1; i++) {
     let block = {
-        x: 0,
-        y: height - 300,
+        AppearanceComponent: AppearanceComponent(),
+        PositionComponent: PositionComponent(0, height - 300),
         vx: 0,
         height: 50,
         width: 100,
-        Img: new Image()
     }
     let x = randomInteger(0, 4)
     if (i > 0) {
-        while (blocks[i - 1].x == randomPosition[x]) {
+        while (blocks[i - 1].PositionComponent.x == randomPosition[x]) {
             x = randomInteger(0, 4)
         }
     }
-    block.x = randomPosition[x]
-    block.Img.src = 'Media/Гусеницы/land-vector-1.png'
+    block.PositionComponent.x = randomPosition[x]
+    block.AppearanceComponent.img.src = 'Media/Гусеницы/land-vector-1.png'
     blocks.push(block);
-    console.log(blocks[i])
 }
 
 let caterpillars = []
-for (let i = 0; i < 2; i++) {
+for (let i = 0; i < 1; i++) {
     let caterpillar = {
-        x: blocks[i].x,
-        y: height - 300 - blocks[i].height,
+        AppearanceComponent: AppearanceComponent(),
+        PositionComponent: PositionComponent(blocks[i].PositionComponent.x, height - 300 - blocks[i].height),
         height: 50,
         width: 100,
-        Img: new Image(),
         hp: 100
     }
-    caterpillar.Img.src = 'Media/Гусеницы/caterpillar003.png'
+    caterpillar.AppearanceComponent.img.src = 'Media/Гусеницы/caterpillar003.png'
     caterpillars.push(caterpillar);
 }
 let count = 0;
@@ -147,8 +143,8 @@ function randomInteger(min, max) {
 // 	let allowed = true;
 // 	if(blocks.length > 0){
 // 		blocks.forEach(block => {
-// 			if(block.x + block.width < x && 
-// 				block.x > x + 100){
+// 			if(block.PositionComponent.x + block.width < x && 
+// 				block.PositionComponent.x > x + 100){
 // 				allowed = false;
 // 			}
 // 		})
@@ -164,35 +160,46 @@ activeKey['Escape'] = ''
 let currentTime = Date.now();
 
 function collisions(block1, block2) {
-    if(block1.x + block1.width >= block2.x &&
-        block1.x <= block2.x + block2.width &&
-        block1.y + block1.height >= block2.y &&
-        block1.y <= block2.y + block2.height){
+    const leftSideBlock1 = block1.PositionComponent.x; 
+    const rightSideBlock1 = block1.PositionComponent.x + block1.width;
+    const leftSideBlock2 = block2.PositionComponent.x;
+    const rightSideBlock2 = block2.PositionComponent.x + block2.width;
+    const topSideBlock1 = block1.PositionComponent.y;
+    const bottomSideBlock1 = block1.PositionComponent.y + block1.height;
+    const topSideBlock2 = block2.PositionComponent.y;
+    const bottomSideBlock2 = block2.PositionComponent.y + block2.height;
+
+    if(rightSideBlock1 >= leftSideBlock2 &&
+        leftSideBlock1 <= rightSideBlock2 &&
+        bottomSideBlock1 >= topSideBlock2 &&
+        topSideBlock1 <= bottomSideBlock2){
         return true;
     } else {
         return false;
     }
 }
 
-function handleConllision(block1, block2){
-    if(block1.y >= height - 300){
-        if(block1.x + block1.width >= block2.x && block1.direction == "right"){
-            block1.x = block2.x - block1.width - 1;
+function handleConllision(block1, block2) {
+    console.log("handle");
+    console.log(block1.PositionComponent.y, height - 300);
+    if(block1.PositionComponent.y >= height - 300) {
+        if(block1.PositionComponent.x + block1.width >= block2.PositionComponent.x && block1.direction == "right"){
+            block1.PositionComponent.x = block2.PositionComponent.x - block1.width - 1;
             block1.vx = 0;
         }
-        if(block1.x < block2.x + block2.width && block1.direction == "left"){
-            block1.x = block2.x + block2.width + 1;
+        if(block1.PositionComponent.x < block2.PositionComponent.x + block2.width && block1.direction == "left"){
+            block1.PositionComponent.x = block2.PositionComponent.x + block2.width + 1;
             block1.vx = 0;
         }
     }
-    if(block1.y + block1.height >= block2.y && block1.y < block2.y){
-        block1.y = block2.y - block1.height;
+    if(block1.PositionComponent.y + block1.height >= block2.PositionComponent.y && block1.PositionComponent.y < block2.PositionComponent.y){
+        block1.PositionComponent.y = block2.PositionComponent.y - block1.height;
         block1.jump = false;
     }
 
     caterpillars.forEach(caterpillar=>{
 
-        if (block1.x + block1.width > caterpillar.x && block1.x < caterpillar.x + caterpillar.width && caterpillar.hp == 100) {
+        if (block1.PositionComponent.x + block1.width > caterpillar.PositionComponent.x && block1.PositionComponent.x < caterpillar.PositionComponent.x + caterpillar.width && caterpillar.hp == 100) {
             count++;
             caterpillar.hp -= 100;
             if (block1.hp <= 95) {
@@ -220,15 +227,15 @@ function update(hero) {
         }
     }
         if (activeKey['ArrowLeft'] && hero.digin == false) {
-            if (hero.x <= width/2 && background.x < 0) {
+            if (hero.PositionComponent.x <= width/2 && background.PositionComponent.x < 0) {
                 blocks.forEach(block=>{
-                    block.x += 10;
+                    block.PositionComponent.x += 10;
                 })
                 caterpillars.forEach(caterpillar=>{
-                    caterpillar.x += 10;
+                    caterpillar.PositionComponent.x += 10;
                 })
                 hero.vx = 0
-                background.x += 10
+                background.PositionComponent.x += 10
             } else {
                 hero.vx = -10
                 hero.sprite = 95
@@ -236,14 +243,14 @@ function update(hero) {
             hero.direction = "left";
         }
         if (activeKey['ArrowRight'] && hero.digin == false) {
-            if (hero.x + hero.width >= width/2) {
+            if (hero.PositionComponent.x + hero.width >= width/2) {
                 blocks.forEach(block=>{
-                    block.x -= 10;
+                    block.PositionComponent.x -= 10;
                 })
                 caterpillars.forEach(caterpillar=>{
-                    caterpillar.x -= 10;
+                    caterpillar.PositionComponent.x -= 10;
                 })
-                background.x -= 10
+                background.PositionComponent.x -= 10
                 hero.vx = 0
             } else {
                 hero.vx = 10
@@ -260,7 +267,7 @@ function update(hero) {
             hero.sprite = 130
             hero.jump = true
         } else if (hero.digin == true) {
-            hero.y = height - 300
+            hero.PositionComponent.y = height - 300
             hero.digin = false
         }
     } 
@@ -284,9 +291,9 @@ function update(hero) {
         }
     }
     hero.vx *= 0.9;
-    hero.x += hero.vx;
-    hero.y += hero.vy;
-    hero.vy += 1; // Гравитация
+    hero.PositionComponent.x += hero.vx;
+    hero.PositionComponent.y += hero.vy;
+    // hero.vy += 1; // Гравитация
     // console.log(hero.direction);
 
     blocks.forEach(block=>{
@@ -299,14 +306,14 @@ function update(hero) {
         hero.vy += 1; // Гравитация
         hero.direction = "bottom";
     }
-    if (hero.x < 0) {
-        hero.x = 0
+    if (hero.PositionComponent.x < 0) {
+        hero.PositionComponent.x = 0
     }
-    if (hero.x > width - hero.width) {
-        hero.x = width - hero.width                     
+    if (hero.PositionComponent.x > width - hero.width) {
+        hero.PositionComponent.x = width - hero.width                     
     }
-    if (hero.y > height - 300 && hero.digin == false) {
-        hero.y = height - 300
+    if (hero.PositionComponent.y > height - 300 && hero.digin == false) {
+        hero.PositionComponent.y = height - 300
         hero.jump = false
     }
     if (activeKey['Escape'] != '' && pause == false) {
@@ -318,17 +325,17 @@ function update(hero) {
 function render(hero) {
     context.clearRect(0, 0, width, height);
     context.beginPath();
-        context.drawImage(background.Img, background.x, background.y, background.width, height);
+        context.drawImage(background.AppearanceComponent.img, background.PositionComponent.x, background.PositionComponent.y, background.width, height);
     context.closePath();
 // Персонаж
     context.beginPath();
     
-        // context.drawImage(hero.Img, 31 * hero.currentFrame, hero.sprite, 25, 35, hero.x, hero.y, 50, 50)
+        // context.drawImage(hero.AppearanceComponent.img, 31 * hero.currentFrame, hero.sprite, 25, 35, hero.PositionComponent.x, hero.PositionComponent.y, 50, 50)
         // console.log(hero.currentFrame)
         context.fillStyle = 'red';
         context.fillRect(width - 310, 10, hero.hp * 3, 15);
-        if (hero.y < height - 100) {
-            context.fillRect(hero.x, hero.y, hero.width, hero.height);
+        if (hero.PositionComponent.y < height - 100) {
+            context.fillRect(hero.PositionComponent.x, hero.PositionComponent.y, hero.width, hero.height);
         }
     context.closePath();
 // Возвышенность
@@ -336,12 +343,12 @@ function render(hero) {
         blocks.forEach(function(block) {
             if(debug){
                 context.strokeStyle="red";
-                context.rect(block.x, block.y, block.width, block.height);
+                context.rect(block.PositionComponent.x, block.PositionComponent.y, block.width, block.height);
                 context.stroke();
             }
             context.fillStyle = 'black';
-            context.fillRect(block.x, block.y, block.width, block.height)
-            // context.drawImage(block.Img, block.x, block.y, block.width, block.height);
+            context.fillRect(block.PositionComponent.x, block.PositionComponent.y, block.width, block.height)
+            // context.drawImage(block.AppearanceComponent.img, block.PositionComponent.x, block.PositionComponent.y, block.width, block.height);
             
         })
     context.closePath();
@@ -349,7 +356,7 @@ function render(hero) {
     context.beginPath();
         caterpillars.forEach(function(caterpillar) {
             if (caterpillar.hp == 100) {
-                context.drawImage(caterpillar.Img, caterpillar.x, caterpillar.y, caterpillar.width, caterpillar.height);
+                context.drawImage(caterpillar.AppearanceComponent.img, caterpillar.PositionComponent.x, caterpillar.PositionComponent.y, caterpillar.width, caterpillar.height);
             }
         })
     context.closePath();
@@ -363,14 +370,14 @@ function render(hero) {
     // context.beginPath();
     // 	blocks.forEach(function(block) {
     // 		context.fillStyle = 'yellow';
-    // 		context.fillRect(Hyena.x, Hyena.y, Hyena.width, Hyena.height)
+    // 		context.fillRect(Hyena.PositionComponent.x, Hyena.PositionComponent.y, Hyena.width, Hyena.height)
     // 	})
     // context.closePath();
     
 }
 function main() {
     if (pause == false && gameover == false) {
-        update(Pumba)
+        update(Timon)
     } else if (gameover == true) {
         elementGameover.style.display = 'flex';
     } else {
@@ -381,6 +388,6 @@ function main() {
         }
     }
 
-    render(Pumba)
+    render(Timon)
     requestAnimationFrame(main)
 }
