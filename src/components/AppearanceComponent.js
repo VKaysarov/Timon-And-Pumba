@@ -1,13 +1,19 @@
 const AppearanceComponent = (
-    img = new Image(),
+    imgSrc = "",
     frames = 0,
     currentFrame = 0,
     speedAnim = 0,
     sprite = 0,
-) => ({
-    img,
-    frames,
-    currentFrame,
-    speedAnim,
-    sprite,
-})
+) => {
+    const img = new Image();
+
+    img.src = imgSrc;
+
+    return {
+        img,
+        frames,
+        currentFrame,
+        speedAnim,
+        sprite,
+    }
+}

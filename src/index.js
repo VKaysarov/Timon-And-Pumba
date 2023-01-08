@@ -9,46 +9,33 @@ const buttonStart = document.getElementById('start');
 const bootstrap = document.getElementById('bootstrap');
 const debug = true;
 let width = canvas.width = window.innerWidth - 5;  
-let height = canvas.height = window.innerHeight - 5;
+height = canvas.height = window.innerHeight - 5;
 let pause = false;
 let gameover = false;
+console.log(Timon)
 
 let background = {
     PositionComponent: PositionComponent(0, 0, 5000, height),
-    AppearanceComponent: AppearanceComponent(),
+    AppearanceComponent: AppearanceComponent('Media/Фоны/1932758.png'),
     vx: 0,
 };
-background.AppearanceComponent.img.src = 'Media/Фоны/1932758.png'
-let Timon = {
-    PositionComponent: PositionComponent(0, height - 300, 80, 100),
-    AppearanceComponent: AppearanceComponent(new Image(), 9, 0, 0, 95),
-    hp: 100,
-    vx: 0,
-    vy: 0,
-    jump: false,
-    digin: false,
-    direction: 0,
-}
-Timon.AppearanceComponent.img.src = 'Media/sprites/TimonTLK.png'
 let Pumba = {
     PositionComponent: PositionComponent(),
-    AppearanceComponent: AppearanceComponent(new Image(), 9, 0, 0, 95),
+    AppearanceComponent: AppearanceComponent('Media/sprites/PumbaTLK.png', 9, 0, 0, 95),
     hp: 100,
     vx: 0,
     vy: 0,
     jump: false,
     digin: false
 }
-Pumba.AppearanceComponent.img.src = 'Media/sprites/PumbaTLK.png'
 let Hyena = {
     PositionComponent: PositionComponent(),
-    AppearanceComponent: AppearanceComponent(new Image(), 9, 0, 0, 95),
+    AppearanceComponent: AppearanceComponent('Media/sprites/Hyenas.png', 9, 0, 0, 95),
     hp: 100,
     vx: 0,
     vy: 0,
     jump: false,
 }
-Hyena.AppearanceComponent.img.src = 'Media/sprites/Hyenas.png'
 
 let randomPosition = []
 for (var i = 100; i < 5000; i+=100) {
@@ -58,7 +45,7 @@ for (var i = 100; i < 5000; i+=100) {
 let blocks = []
 for (let i = 0; i < 1; i++) {
     let block = {
-        AppearanceComponent: AppearanceComponent(),
+        AppearanceComponent: AppearanceComponent('Media/Гусеницы/land-vector-1.png'),
         PositionComponent: PositionComponent(0, height - 300),
         vx: 0,
     }
@@ -69,18 +56,16 @@ for (let i = 0; i < 1; i++) {
         }
     }
     block.PositionComponent.x1 = randomPosition[x]
-    block.AppearanceComponent.img.src = 'Media/Гусеницы/land-vector-1.png'
     blocks.push(block);
 }
 
 let caterpillars = []
 for (let i = 0; i < 1; i++) {
     let caterpillar = {
-        AppearanceComponent: AppearanceComponent(),
+        AppearanceComponent: AppearanceComponent('Media/Гусеницы/caterpillar003.png'),
         PositionComponent: PositionComponent(blocks[i].PositionComponent.x1, height - 300 - blocks[i].PositionComponent.y2, 100, 50),
         hp: 100
     }
-    caterpillar.AppearanceComponent.img.src = 'Media/Гусеницы/caterpillar003.png'
     caterpillars.push(caterpillar);
 }
 let count = 0;
