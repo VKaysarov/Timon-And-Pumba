@@ -1,4 +1,6 @@
-const PositionComponent = (x = 0, y = 0) => ({
-    x,
-    y,
+const PositionComponent = (x1 = 0, y1 = 0, x2 = 199, y2= 100) => ({
+    x1,
+    y1,
+    x2,
+    y2,
 })
