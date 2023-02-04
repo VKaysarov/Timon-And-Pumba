@@ -1,5 +1,16 @@
+import { Timon } from "./entity/Timon";
+import { PositionComponent } from "./components/PositionComponent";
+import { AppearanceComponent } from "./components/AppearanceComponent";
+import backgroundUrlImg from "../Media/Фоны/1932758.png";
+import PumbaUrlImg from "../Media/sprites/PumbaTLK.png";
+import TimonUrlImg from "../Media/sprites/TimonTLK.png";
+import hyenasUrlImg from "../Media/sprites/Hyenas.png";
+import blockUrlImg from "../Media/Гусеницы/land-vector-1.png";
+import caterpillarUrlImg from "../Media/Гусеницы/caterpillar003.png";
+
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
+
 const elementTimon = document.getElementById('Timon');
 const elementPumba = document.getElementById('Pumba');
 const elementPause = document.getElementById('pause');
@@ -9,19 +20,18 @@ const buttonStart = document.getElementById('start');
 const bootstrap = document.getElementById('bootstrap');
 const debug = true;
 let width = canvas.width = window.innerWidth - 5;  
-height = canvas.height = window.innerHeight - 5;
+let height = canvas.height = window.innerHeight - 5;
 let pause = false;
 let gameover = false;
-console.log(Timon)
 
 let background = {
     PositionComponent: PositionComponent(0, 0, 5000, height),
-    AppearanceComponent: AppearanceComponent('Media/Фоны/1932758.png'),
+    AppearanceComponent: AppearanceComponent(backgroundUrlImg),
     vx: 0,
 };
 let Pumba = {
     PositionComponent: PositionComponent(),
-    AppearanceComponent: AppearanceComponent('Media/sprites/PumbaTLK.png', 9, 0, 0, 95),
+    AppearanceComponent: AppearanceComponent(PumbaUrlImg, 9, 0, 0, 95),
     hp: 100,
     vx: 0,
     vy: 0,
@@ -30,7 +40,7 @@ let Pumba = {
 }
 let Hyena = {
     PositionComponent: PositionComponent(),
-    AppearanceComponent: AppearanceComponent('Media/sprites/Hyenas.png', 9, 0, 0, 95),
+    AppearanceComponent: AppearanceComponent(hyenasUrlImg, 9, 0, 0, 95),
     hp: 100,
     vx: 0,
     vy: 0,
@@ -45,7 +55,7 @@ for (var i = 100; i < 5000; i+=100) {
 let blocks = []
 for (let i = 0; i < 1; i++) {
     let block = {
-        AppearanceComponent: AppearanceComponent('Media/Гусеницы/land-vector-1.png'),
+        AppearanceComponent: AppearanceComponent(blockUrlImg),
         PositionComponent: PositionComponent(0, height - 300),
         vx: 0,
     }
@@ -62,7 +72,7 @@ for (let i = 0; i < 1; i++) {
 let caterpillars = []
 for (let i = 0; i < 1; i++) {
     let caterpillar = {
-        AppearanceComponent: AppearanceComponent('Media/Гусеницы/caterpillar003.png'),
+        AppearanceComponent: AppearanceComponent(caterpillarUrlImg),
         PositionComponent: PositionComponent(blocks[i].PositionComponent.x1, height - 300 - blocks[i].PositionComponent.y2, 100, 50),
         hp: 100
     }

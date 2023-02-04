@@ -1,4 +1,4 @@
-const AppearanceComponent = (
+export const AppearanceComponent = (
     imgSrc = "",
     frames = 0,
     currentFrame = 0,
