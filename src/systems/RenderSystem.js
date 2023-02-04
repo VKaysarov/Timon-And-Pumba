@@ -21,8 +21,8 @@ export const RenderSystem = (hero) => {
     context.closePath();
 // Возвышенность
     context.beginPath();
-        blocks.forEach(function(block) {
-            if(debug) {
+        blocks.forEach((block) => {
+            if (debug) {
                 context.strokeStyle="red";
                 context.rect(block.PositionComponent.x1, block.PositionComponent.y1, block.PositionComponent.x2, block.PositionComponent.y2);
                 context.stroke();
@@ -35,7 +35,7 @@ export const RenderSystem = (hero) => {
     context.closePath();
 // Гусеница
     context.beginPath();
-        caterpillars.forEach(function(caterpillar) {
+        caterpillars.forEach((caterpillar) => {
             if (caterpillar.hp == 100) {
                 context.drawImage(caterpillar.AppearanceComponent.img, caterpillar.PositionComponent.x1, caterpillar.PositionComponent.y1, caterpillar.PositionComponent.x2, caterpillar.PositionComponent.y2);
             }

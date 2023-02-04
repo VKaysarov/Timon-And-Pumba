@@ -1,13 +1,9 @@
-import { Timon } from "./entity/Timon";
-import { Background } from "./entity/Background";
 import { PositionComponent } from "./components/PositionComponent";
 import { AppearanceComponent } from "./components/AppearanceComponent";
 import { InitialSystem } from "./systems/InitialSystem";
 import PumbaUrlImg from "/Media/sprites/PumbaTLK.png";
 import hyenasUrlImg from "/Media/sprites/Hyenas.png";
-import { MovementSystem } from "./systems/MovementSystem";
-import { RenderSystem } from "./systems/RenderSystem";
-import { World } from "./entity/World";
+import { AnimationSystem } from "./systems/AnimationSystem";
 
 const elementTimon = document.getElementById('Timon');
 const elementPumba = document.getElementById('Pumba');
@@ -22,7 +18,7 @@ let gameover = false;
 
 InitialSystem();
 
-let Pumba = {
+const Pumba = {
     PositionComponent: PositionComponent(),
     AppearanceComponent: AppearanceComponent(PumbaUrlImg, 9, 0, 0, 95),
     hp: 100,
@@ -31,7 +27,8 @@ let Pumba = {
     jump: false,
     digin: false
 }
-let Hyena = {
+
+const Hyena = {
     PositionComponent: PositionComponent(),
     AppearanceComponent: AppearanceComponent(hyenasUrlImg, 9, 0, 0, 95),
     hp: 100,
@@ -61,7 +58,7 @@ name.addEventListener('input', function() {
 })
 buttonStart.addEventListener('click', function() {
     bootstrap.style.display = 'none';
-    main();
+    AnimationSystem(activeKey);
 })
 let s = 0;	
 let m = 0;
@@ -87,47 +84,3 @@ let timer = false;
 activeKey['Escape'] = ''
 
 let currentTime = Date.now();
-
-function update(hero) {
-    MovementSystem(hero, activeKey);
-
-    if(timer == false){
-        if(Date.now() - currentTime >= 1000){
-            currentTime = Date.now();
-            if (s < 59) {
-                    s++;
-                } else {
-                    s = 0;
-                    m++;
-                }
-                if (hero.hp > 1) {
-                    hero.hp--;
-                } else {
-                    gameover = true;
-                }
-        }
-    }
-
-    if (activeKey['Escape'] != '' && pause == false) {
-        elementPause.style.display = 'flex';
-        pause = true;
-        activeKey['Escape'] = '';
-    }
-}
-
-function main() {
-    if (pause == false && gameover == false) {
-        update(Timon)
-    } else if (gameover == true) {
-        elementGameover.style.display = 'flex';
-    } else {
-        if (activeKey['Escape'] != '') {
-            elementPause.style.display = 'none';
-            pause = false;
-            activeKey['Escape'] = '';
-        }
-    }
-
-    RenderSystem(Timon)
-    requestAnimationFrame(main)
-}
