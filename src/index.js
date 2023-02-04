@@ -1,12 +1,11 @@
 import { Timon } from "./entity/Timon";
 import { PositionComponent } from "./components/PositionComponent";
 import { AppearanceComponent } from "./components/AppearanceComponent";
-import backgroundUrlImg from "../Media/Фоны/1932758.png";
-import PumbaUrlImg from "../Media/sprites/PumbaTLK.png";
-import TimonUrlImg from "../Media/sprites/TimonTLK.png";
-import hyenasUrlImg from "../Media/sprites/Hyenas.png";
-import blockUrlImg from "../Media/Гусеницы/land-vector-1.png";
-import caterpillarUrlImg from "../Media/Гусеницы/caterpillar003.png";
+import backgroundUrlImg from "/Media/Background/1932758.png";
+import PumbaUrlImg from "/Media/sprites/PumbaTLK.png";
+import hyenasUrlImg from "/Media/sprites/Hyenas.png";
+import blockUrlImg from "/Media/Caterpillars/land-vector-1.png";
+import caterpillarUrlImg from "/Media/Caterpillars/caterpillar003.png";
 
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
