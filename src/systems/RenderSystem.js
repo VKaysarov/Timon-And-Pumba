@@ -7,9 +7,16 @@ export const RenderSystem = (entities) => {
     for (let entity of entities) {
         const { x1, y1, x2, y2 } = entity.PositionComponent;
         const { img } = entity.AppearanceComponent;
+
         // console.log(x1);
         context.beginPath();
+        if (entity.hasOwnProperty("FrameComponent")) {
+            const { currentFrame, sprite } = entity.FrameComponent;
+         
+            context.drawImage(img, 31 * currentFrame, sprite, 25, 35, x1, y1, x2, y2);
+        } else {
             context.drawImage(img, x1, y1, x2, y2);
+        }
         context.closePath();
     }
 // Персонаж

@@ -10,7 +10,6 @@ const name = document.getElementById('name');
 const buttonStart = document.getElementById('start');
 const bootstrap = document.getElementById('bootstrap');
 const debug = true;
-let gameover = false;
 let activeKey = [];
 
 addEventListener('resize', function() {
@@ -56,4 +55,3 @@ buttonStart.addEventListener('click', function() {
 // 		chooseBlockPosition();
 // 	}
 // }
-activeKey['Escape'] = ''

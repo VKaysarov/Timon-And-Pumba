@@ -35,7 +35,7 @@ export const MovementSystem = (hero, activeKey) => {
             hero.vx = 0
         } else {
             hero.vx = 10
-            hero.sprite = 95
+            hero.FrameComponent.sprite = 95
         }
         hero.direction = "right";
     }
@@ -43,7 +43,7 @@ export const MovementSystem = (hero, activeKey) => {
      if (activeKey['ArrowUp']) {
         if (hero.jump == false) {
             hero.vy = -20
-            hero.sprite = 130
+            hero.FrameComponent.sprite = 130
             hero.jump = true
         } else if (hero.digin == true) {
             hero.PositionComponent.y1 = height - 300
@@ -53,19 +53,19 @@ export const MovementSystem = (hero, activeKey) => {
     if (activeKey['ArrowDown']) {
         if (hero.digin == false) {
             hero.vy = 10
-            hero.sprite = 130
+            hero.FrameComponent.sprite = 130
             hero.digin = true
         }
     } 
     if (activeKey['ArrowLeft'] || activeKey['ArrowRight'] || activeKey['ArrowUp']) {
-        if (hero.speedAnim < 5) {
-            hero.speedAnim++;
+        if (hero.FrameComponent.speedAnim < 5) {
+            hero.FrameComponent.speedAnim++;
         } else {
-            hero.speedAnim = 0;
-            if (hero.currentFrame == hero.frames) {
-                hero.currentFrame = 0;
+            hero.FrameComponent.speedAnim = 0;
+            if (hero.FrameComponent.currentFrame == hero.FrameComponent.frames) {
+                hero.FrameComponent.currentFrame = 0;
             } else {
-                hero.currentFrame++;
+                hero.FrameComponent.currentFrame++;
             }
         }
     }
