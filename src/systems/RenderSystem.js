@@ -8,24 +8,18 @@ export const RenderSystem = (entities) => {
         const { x1, y1, x2, y2 } = entity.PositionComponent;
         const { img } = entity.AppearanceComponent;
 
-        // console.log(x1);
         context.beginPath();
         if (entity.hasOwnProperty("FrameComponent")) {
             const { currentFrame, sprite } = entity.FrameComponent;
-         
             context.drawImage(img, 31 * currentFrame, sprite, 25, 35, x1, y1, x2, y2);
         } else {
             context.drawImage(img, x1, y1, x2, y2);
         }
+        // context.fillText(`Position: ${x1} ${x2}`, x1, y1);
         context.closePath();
     }
 // Персонаж
     // context.beginPath();
-    
-    //     // context.drawImage(hero.AppearanceComponent.img, 31 * hero.currentFrame, hero.sprite, 25, 35, hero.PositionComponent.x, hero.PositionComponent.y, 50, 50)
-    //     // console.log(hero.currentFrame)
-    //     context.fillStyle = 'red';
-    //     context.fillRect(width - 310, 10, hero.hp * 3, 15);
     //     if (hero.PositionComponent.y1 < height - 100) {
     //         context.fillRect(hero.PositionComponent.x1, hero.PositionComponent.y1, hero.PositionComponent.x2, hero.PositionComponent.y2);
     //     }

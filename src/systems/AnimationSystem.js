@@ -25,10 +25,9 @@ export const AnimationSystem = (activeKey) => {
 
     context.clearRect(0, 0, width, height);
 
-    RenderSystem([Timon]);
     RenderSystem([Background, Timon]);
-    RenderSystem(BlockList);
     RenderSystem(Caterpillars);
+    RenderSystem(BlockList);
 
     if (!activeKey['Escape']) {
         requestAnimationFrame(() => AnimationSystem(activeKey));
