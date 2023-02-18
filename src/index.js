@@ -16,17 +16,8 @@ const buttonStart = document.getElementById('start');
 const bootstrap = document.getElementById('bootstrap');
 const debug = true;
 let gameover = false;
-
-const Hyena = {
-    PositionComponent: PositionComponent(),
-    AppearanceComponent: AppearanceComponent(hyenasUrlImg, 9, 0, 0, 95),
-    hp: 100,
-    vx: 0,
-    vy: 0,
-    jump: false,
-}
-
 let activeKey = [];
+
 addEventListener('resize', function() {
     canvas.width = window.innerWidth - 5;  
     canvas.height = window.innerHeight - 5;
