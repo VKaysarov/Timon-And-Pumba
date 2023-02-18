@@ -1,6 +1,6 @@
 import { PositionComponent } from "../components/PositionComponent";
 import { AppearanceComponent } from "../components/AppearanceComponent";
-import timonUrlImg from "/Media/sprites/TimonTLK.png";
+import timonUrlImg from "/Media/sprites/Timon2.png";
 
 export const Timon = {
     PositionComponent: PositionComponent(0, 0, 80, 100),
