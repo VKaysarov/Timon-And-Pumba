@@ -1,10 +1,5 @@
-import { PositionComponent } from "./components/PositionComponent";
-import { AppearanceComponent } from "./components/AppearanceComponent";
 import { InitialSystem } from "./systems/InitialSystem";
-import PumbaUrlImg from "/Media/sprites/PumbaTLK.png";
-import hyenasUrlImg from "/Media/sprites/Hyenas.png";
 import { AnimationSystem } from "./systems/AnimationSystem";
-import { generateBlocks, generateCaterpillars } from "./systems/InitialSystem";
 
 InitialSystem();
 
@@ -22,12 +17,15 @@ addEventListener('resize', function() {
     canvas.width = window.innerWidth - 5;  
     canvas.height = window.innerHeight - 5;
 })
+
 addEventListener('keydown', function(event) {
     activeKey[event.code] = true;
 })
+
 addEventListener('keyup', function(event) {
     activeKey[event.code] = false;
 })
+
 name.addEventListener('input', function() {
     if (name.value == '') {
         buttonStart.disabled = true;
@@ -35,6 +33,7 @@ name.addEventListener('input', function() {
         buttonStart.disabled = false;
     }
 })
+
 buttonStart.addEventListener('click', function() {
     bootstrap.style.display = 'none';
     AnimationSystem(activeKey);
