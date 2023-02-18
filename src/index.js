@@ -4,19 +4,18 @@ import { InitialSystem } from "./systems/InitialSystem";
 import PumbaUrlImg from "/Media/sprites/PumbaTLK.png";
 import hyenasUrlImg from "/Media/sprites/Hyenas.png";
 import { AnimationSystem } from "./systems/AnimationSystem";
+import { generateBlocks, generateCaterpillars } from "./systems/InitialSystem";
+
+InitialSystem();
 
 const elementTimon = document.getElementById('Timon');
 const elementPumba = document.getElementById('Pumba');
-const elementPause = document.getElementById('pause');
 const elementGameover = document.getElementById('gameover');
 const name = document.getElementById('name');
 const buttonStart = document.getElementById('start');
 const bootstrap = document.getElementById('bootstrap');
 const debug = true;
-let pause = false;
 let gameover = false;
-
-InitialSystem();
 
 const Pumba = {
     PositionComponent: PositionComponent(),
@@ -37,11 +36,10 @@ const Hyena = {
     jump: false,
 }
 
-let count = 0;
 let activeKey = [];
 addEventListener('resize', function() {
-    width = canvas.width = window.innerWidth - 5;  
-    height = canvas.height = window.innerHeight - 5;
+    canvas.width = window.innerWidth - 5;  
+    canvas.height = window.innerHeight - 5;
 })
 addEventListener('keydown', function(event) {
     activeKey[event.code] = true;
@@ -60,9 +58,6 @@ buttonStart.addEventListener('click', function() {
     bootstrap.style.display = 'none';
     AnimationSystem(activeKey);
 })
-let s = 0;	
-let m = 0;
-let timer = false;
 
 // function chooseBlockPosition(){
 // 	let x = randomInteger(0, );
@@ -82,5 +77,3 @@ let timer = false;
 // 	}
 // }
 activeKey['Escape'] = ''
-
-let currentTime = Date.now();

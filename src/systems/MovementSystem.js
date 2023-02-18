@@ -1,22 +1,22 @@
 import { World } from "../entity/World";
-import { generateBlocks, generateCaterpillars } from "../systems/InitialSystem";
+import { BlockList } from "../entity/Block";
+import { Background } from "../entity/Background";
+import { Caterpillars } from "../entity/Caterpillar";
 import { collisions, handleConllision } from "../systems/CollisionSystem";
 
 export const MovementSystem = (hero, activeKey) => {
     const { width, height } = World;
-    const blocks = generateBlocks();
-    const caterpillars = generateCaterpillars(blocks);
 
     if (activeKey['ArrowLeft'] && hero.digin == false) {
-        if (hero.PositionComponent.x1 <= width/2 && background.PositionComponent.x1 < 0) {
-            blocks.forEach(block => {
+        if (hero.PositionComponent.x1 <= width/2 && Background.PositionComponent.x1 < 0) {
+            BlockList.forEach(block => {
                 block.PositionComponent.x1 += 10;
             })
-            caterpillars.forEach(caterpillar => {
+            Caterpillars.forEach(caterpillar => {
                 caterpillar.PositionComponent.x1 += 10;
             })
             hero.vx = 0
-            background.PositionComponent.x1 += 10
+            Background.PositionComponent.x1 += 10
         } else {
             hero.vx = -10
             hero.sprite = 95
@@ -25,13 +25,13 @@ export const MovementSystem = (hero, activeKey) => {
     }
     if (activeKey['ArrowRight'] && hero.digin == false) {
         if (hero.PositionComponent.x1 + hero.PositionComponent.x2 >= width/2) {
-            blocks.forEach(block => {
+            BlockList.forEach(block => {
                 block.PositionComponent.x1 -= 10;
             })
-            caterpillars.forEach(caterpillar => {
+            Caterpillars.forEach(caterpillar => {
                 caterpillar.PositionComponent.x1 -= 10;
             })
-            background.PositionComponent.x1 -= 10
+            Background.PositionComponent.x1 -= 10
             hero.vx = 0
         } else {
             hero.vx = 10
@@ -74,10 +74,19 @@ export const MovementSystem = (hero, activeKey) => {
     hero.PositionComponent.y1 += hero.vy;
     // hero.vy += 1; // Гравитация
 
-    blocks.forEach(block => {
+    BlockList.forEach(block => {
         let collides = collisions(hero, block);
         if (collides) {
             handleConllision(hero, block);
+            Caterpillars.forEach(caterpillar => {
+                if (hero.PositionComponent.x1 + hero.PositionComponent.x2 > caterpillar.PositionComponent.x1 && hero.PositionComponent.x1 < caterpillar.PositionComponent.x1 + caterpillar.PositionComponent.x2 && caterpillar.hp == 100) {
+                    World.count++;
+                    caterpillar.hp -= 100;
+                    if (hero.hp <= 95) {
+                        hero.hp += 5;
+                    }
+                }
+            })
         }
     });
     if (hero.jump) {

@@ -1,22 +1,27 @@
+import { Timer } from "../entity/Timer";
 import { MovementSystem } from "./MovementSystem";
+let currentTime = Date.now();
 
-export const UpdateSystem = (hero) => {
+export const UpdateSystem = (hero, activeKey) => {
+
     MovementSystem(hero, activeKey);
 
-    if(timer == false){
-        if(Date.now() - currentTime >= 1000){
+    if (Timer.isActive == false) {
+        if (Date.now() - currentTime >= 1000) {
             currentTime = Date.now();
-            if (s < 59) {
-                    s++;
-                } else {
-                    s = 0;
-                    m++;
-                }
-                if (hero.hp > 1) {
-                    hero.hp--;
-                } else {
-                    gameover = true;
-                }
+
+            if (Timer.s < 59) {
+                Timer.s++;
+            } else {
+                Timer.s = 0;
+                Timer.m++;
+            }
+
+            if (hero.hp > 1) {
+                hero.hp--;
+            } else {
+                gameover = true;
+            }
         }
     }
 
