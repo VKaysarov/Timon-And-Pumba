@@ -19,7 +19,7 @@ export const MovementSystem = (hero, activeKey) => {
             Background.PositionComponent.x1 += 10
         } else {
             hero.vx = -10
-            hero.sprite = 95
+            hero.FrameComponent.sprite = 95
         }
         hero.direction = "left";
     }
@@ -57,18 +57,18 @@ export const MovementSystem = (hero, activeKey) => {
             hero.digin = true
         }
     } 
-    if (activeKey['ArrowLeft'] || activeKey['ArrowRight'] || activeKey['ArrowUp']) {
+    // if (activeKey['ArrowLeft'] || activeKey['ArrowRight'] || activeKey['ArrowUp']) {
         if (hero.FrameComponent.speedAnim < 5) {
             hero.FrameComponent.speedAnim++;
         } else {
             hero.FrameComponent.speedAnim = 0;
             if (hero.FrameComponent.currentFrame == hero.FrameComponent.frames) {
-                hero.FrameComponent.currentFrame = 0;
+                hero.FrameComponent.currentFrame = 1;
             } else {
                 hero.FrameComponent.currentFrame++;
             }
         }
-    }
+    // }
     hero.vx *= 0.9;
     hero.PositionComponent.x1 += hero.vx;
     hero.PositionComponent.y1 += hero.vy;

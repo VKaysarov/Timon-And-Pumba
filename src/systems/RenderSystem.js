@@ -10,12 +10,12 @@ export const RenderSystem = (entities) => {
 
         context.beginPath();
         if (entity.hasOwnProperty("FrameComponent")) {
-            const { currentFrame, sprite } = entity.FrameComponent;
-            context.drawImage(img, 31 * currentFrame, sprite, 25, 35, x1, y1, x2, y2);
+            const { widthFrame, heightFrame, currentFrame, sprite } = entity.FrameComponent;
+            context.drawImage(img, widthFrame * currentFrame, sprite, widthFrame, heightFrame, x1, y1, x2, y2);
+            // context.fillText(`currentFrame: ${currentFrame}`, x1, y1);
         } else {
             context.drawImage(img, x1, y1, x2, y2);
         }
-        // context.fillText(`Position: ${x1} ${x2}`, x1, y1);
         context.closePath();
     }
 // Персонаж
