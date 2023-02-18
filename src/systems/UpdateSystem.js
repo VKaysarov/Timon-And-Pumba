@@ -1,4 +1,5 @@
 import { Timer } from "../entity/Timer";
+import { World } from "../entity/World";
 import { MovementSystem } from "./MovementSystem";
 let currentTime = Date.now();
 
@@ -20,7 +21,7 @@ export const UpdateSystem = (hero, activeKey) => {
             if (hero.hp > 1) {
                 hero.hp--;
             } else {
-                gameover = true;
+                World.isGameover = true;
             }
         }
     }

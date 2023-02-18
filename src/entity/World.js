@@ -8,4 +8,5 @@ export const World = {
     width,
     height,
     context,
+    isGameover: false,
 }

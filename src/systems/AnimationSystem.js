@@ -9,12 +9,11 @@ import { RenderSystem } from "./RenderSystem";
 const elementPause = document.getElementById('pause');
 const { width, height, context } = World;
 let pause = false;
-let gameover = false;
 
 export const AnimationSystem = (activeKey) => {
-    if (pause == false && gameover == false) {
+    if (pause == false && World.isGameover == false) {
         UpdateSystem(Timon, activeKey)
-    } else if (gameover == true) {
+    } else if (World.isGameover == true) {
         elementGameover.style.display = 'flex';
     } else {
         if (!!activeKey['Escape']) {
