@@ -1,7 +1,7 @@
 import { World } from "../entity/World";
 import { Timer } from "../entity/Timer";
 
-const { width, height, context } = World;
+const { count, width, height, context } = World;
 
 export const RenderSystem = (entities) => {
     for (let entity of entities) {
@@ -27,7 +27,7 @@ export const RenderSystem = (entities) => {
     context.beginPath();
         context.fillStyle = 'black';
         context.font = '22px Verdana';
-        context.fillText('Счет: ' + Timer.count, 10, 30);
+        context.fillText('Счет: ' + World.count, 10, 30);
         context.fillText('Время: ' + Timer.m + ':' + Timer.s, 10, 50);
     context.closePath();
 }
