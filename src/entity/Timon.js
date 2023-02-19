@@ -1,7 +1,7 @@
+import timonUrlImg from "/Media/sprites/Timon2.png";
 import { FrameComponent } from "../components/FrameComponent";
 import { PositionComponent } from "../components/PositionComponent";
 import { AppearanceComponent } from "../components/AppearanceComponent";
-import timonUrlImg from "/Media/sprites/Timon2.png";
 
 export const Timon = {
     FrameComponent: FrameComponent(),
