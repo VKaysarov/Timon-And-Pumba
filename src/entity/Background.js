@@ -1,6 +1,6 @@
 import { PositionComponent } from "../components/PositionComponent";
 import { AppearanceComponent } from "../components/AppearanceComponent";
-import backgroundUrlImg from "/Media/Background/1932758.png";
+import backgroundUrlImg from "/Media/Background/background-1.png";
 
 export const Background = {
     PositionComponent: PositionComponent(0, 0, 5000, 0),
