@@ -21,10 +21,11 @@ export const MovementSystem = (hero, activeKey) => {
             Background.PositionComponent.x1 += 10;
         } else {
             hero.vx = -10;
-            hero.FrameComponent.sprite = 128;
         }
         hero.direction = "left";
+        hero.FrameComponent.sprite = 128;
     }
+
     if (activeKey['ArrowRight'] && hero.digin == false) {
         if (hero.PositionComponent.x1 + hero.PositionComponent.x2 >= width/2) {
             BlockList.forEach(block => {
@@ -37,8 +38,9 @@ export const MovementSystem = (hero, activeKey) => {
             hero.vx = 0;
         } else {;
             hero.vx = 10;
-            hero.FrameComponent.sprite = 96;
         }
+
+        hero.FrameComponent.sprite = 96;
         hero.direction = "right";
     }
      // Прыжок
