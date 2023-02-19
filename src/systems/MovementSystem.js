@@ -21,7 +21,7 @@ export const MovementSystem = (hero, activeKey) => {
             Background.PositionComponent.x1 += 10;
         } else {
             hero.vx = -10;
-            hero.FrameComponent.sprite = 96;
+            hero.FrameComponent.sprite = 128;
         }
         hero.direction = "left";
     }
@@ -37,7 +37,7 @@ export const MovementSystem = (hero, activeKey) => {
             hero.vx = 0;
         } else {;
             hero.vx = 10;
-            hero.FrameComponent.sprite = 64;
+            hero.FrameComponent.sprite = 96;
         }
         hero.direction = "right";
     }
