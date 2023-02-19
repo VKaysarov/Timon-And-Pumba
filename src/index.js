@@ -5,7 +5,6 @@ InitialSystem();
 
 const elementTimon = document.getElementById('Timon');
 const elementPumba = document.getElementById('Pumba');
-const elementGameover = document.getElementById('gameover');
 const name = document.getElementById('name');
 const buttonStart = document.getElementById('start');
 const bootstrap = document.getElementById('bootstrap');

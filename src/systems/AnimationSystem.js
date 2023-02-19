@@ -7,6 +7,7 @@ import { UpdateSystem } from "./UpdateSystem";
 import { RenderSystem } from "./RenderSystem";
 
 const elementPause = document.getElementById('pause');
+const elementGameover = document.getElementById('gameover');
 const { width, height, context } = World;
 let pause = false;
 
