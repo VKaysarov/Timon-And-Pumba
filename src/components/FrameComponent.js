@@ -1,6 +1,6 @@
 export const FrameComponent = (
-    widthFrame = 22,
-    heightFrame = 30,
+    widthFrame = 32,
+    heightFrame = 32,
     frames = 9,
     currentFrame = 1,
     speedAnim = 0,

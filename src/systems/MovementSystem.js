@@ -7,6 +7,8 @@ import { collisions, handleConllision } from "../systems/CollisionSystem";
 export const MovementSystem = (hero, activeKey) => {
     const { width, height } = World;
 
+    hero.FrameComponent.sprite = 0;
+
     if (activeKey['ArrowLeft'] && hero.digin == false) {
         if (hero.PositionComponent.x1 <= width/2 && Background.PositionComponent.x1 < 0) {
             BlockList.forEach(block => {
@@ -15,11 +17,11 @@ export const MovementSystem = (hero, activeKey) => {
             Caterpillars.forEach(caterpillar => {
                 caterpillar.PositionComponent.x1 += 10;
             })
-            hero.vx = 0
-            Background.PositionComponent.x1 += 10
+            hero.vx = 0;
+            Background.PositionComponent.x1 += 10;
         } else {
-            hero.vx = -10
-            hero.FrameComponent.sprite = 95
+            hero.vx = -10;
+            hero.FrameComponent.sprite = 96;
         }
         hero.direction = "left";
     }
@@ -31,11 +33,11 @@ export const MovementSystem = (hero, activeKey) => {
             Caterpillars.forEach(caterpillar => {
                 caterpillar.PositionComponent.x1 -= 10;
             })
-            Background.PositionComponent.x1 -= 10
-            hero.vx = 0
-        } else {
-            hero.vx = 10
-            hero.FrameComponent.sprite = 95
+            Background.PositionComponent.x1 -= 10;
+            hero.vx = 0;
+        } else {;
+            hero.vx = 10;
+            hero.FrameComponent.sprite = 64;
         }
         hero.direction = "right";
     }
@@ -58,7 +60,7 @@ export const MovementSystem = (hero, activeKey) => {
         }
     } 
     // if (activeKey['ArrowLeft'] || activeKey['ArrowRight'] || activeKey['ArrowUp']) {
-        if (hero.FrameComponent.speedAnim < 5) {
+        if (hero.FrameComponent.speedAnim < 3) {
             hero.FrameComponent.speedAnim++;
         } else {
             hero.FrameComponent.speedAnim = 0;
