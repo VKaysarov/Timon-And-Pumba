@@ -1,5 +1,4 @@
 import { World } from "../entity/World";
-import { Timon } from "../entity/Timon";
 import { BlockList } from "../entity/Block";
 import { Background } from "../entity/Background";
 import { Caterpillars } from "../entity/Caterpillar";
@@ -11,9 +10,9 @@ const elementGameover = document.getElementById('gameover');
 const { width, height, context } = World;
 let pause = false;
 
-export const AnimationSystem = (activeKey) => {
+export const AnimationSystem = (activeKey, hero) => {
     if (pause == false && World.isGameover == false) {
-        UpdateSystem(Timon, activeKey)
+        UpdateSystem(hero, activeKey)
     } else if (World.isGameover == true) {
         elementGameover.style.display = 'flex';
     } else {
@@ -26,11 +25,10 @@ export const AnimationSystem = (activeKey) => {
 
     context.clearRect(0, 0, width, height);
 
-    RenderSystem([Background, Timon]);
+    RenderSystem([Background, hero]);
     RenderSystem(Caterpillars);
     RenderSystem(BlockList);
-
     if (!activeKey['Escape']) {
-        requestAnimationFrame(() => AnimationSystem(activeKey));
+        requestAnimationFrame(() => AnimationSystem(activeKey, hero));
     }
 }

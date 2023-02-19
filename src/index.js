@@ -1,3 +1,5 @@
+import { Timon } from "./entity/Timon";
+import { Pumba } from "./entity/Pumba";
 import { InitialSystem } from "./systems/InitialSystem";
 import { AnimationSystem } from "./systems/AnimationSystem";
 
@@ -32,9 +34,18 @@ name.addEventListener('input', function() {
     }
 })
 
+const selectHero = () => {
+    const isTimon = elementTimon.checked ? Timon : null;
+    const isPumba = elementPumba.checked ? Pumba : null;
+
+    return isTimon || isPumba;
+}
+
 buttonStart.addEventListener('click', function() {
+    const hero = selectHero();
+
     bootstrap.style.display = 'none';
-    AnimationSystem(activeKey);
+    AnimationSystem(activeKey, hero);
 })
 
 // function chooseBlockPosition(){
