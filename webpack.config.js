@@ -21,6 +21,10 @@ module.exports = {
                 use: 'html-loader',
             },
             {
+                test: /\.(scss|css)$/i,
+                use: ["style-loader", "css-loader", "sass-loader"],
+            },
+            {
                 test: /\.(png|jpe?g|svg)$/i,
                 type: 'asset/resource',
             }

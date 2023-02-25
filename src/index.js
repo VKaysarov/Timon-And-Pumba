@@ -1,3 +1,4 @@
+import "/public/style/index.scss"
 import { Timon } from "./entity/Timon";
 import { Pumba } from "./entity/Pumba";
 import { InitialSystem } from "./systems/InitialSystem";
