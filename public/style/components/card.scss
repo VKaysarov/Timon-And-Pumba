@@ -1,0 +1,13 @@
+.card {
+    display: grid;
+    grid-template-rows: repeat(1fr, 3);
+
+    &__body {
+        margin: 1em 0;
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: center;
+    }
+}

@@ -5,22 +5,28 @@
 </head>
 <body>
 	<div id="bootstrap">
-		<form>
-			<div class="radio-group">
-				<label class="radio-group__label" for="Timon">
-					<img src="Media/Timon/Timon_1.png" alt="Timon" width="200px">
-				</label>
-				<input class="radio-group__input" type="radio" name="hero" id="Timon">
-				<label class="radio-group__label" for="Pumba">
-					<img src="Media/Pumba/0c59c82dfa5b00271c6b1e7f3b27be6e.png" alt="Pumba" width="200px">
-				</label>
-				<input class="radio-group__input" type="radio" name="hero" id="Pumba">
+		<form class="card">
+			<div class="card__header">
+				<div class="text-field">
+					<label class="text-field__label" for="name">Введите ваше имя:</label>
+					<input class="text-field__input" required type="text" name="name" placeholder="Nickname" id="name">
+				</div>
 			</div>
-			<div class="text-field">
-				<label class="text-field__label" for="name">Введите ваше имя:</label>
-				<input class="text-field__input" required type="text" name="name" placeholder="Nickname" id="name">
+			<div class="card__body">
+				<div class="radio-group">
+					<label class="radio-group__label" for="Timon">
+						<img src="Media/Timon/Timon_1.png" alt="Timon" width="200px">
+					</label>
+					<input class="radio-group__input" type="radio" name="hero" id="Timon">
+					<label class="radio-group__label" for="Pumba">
+						<img src="Media/Pumba/0c59c82dfa5b00271c6b1e7f3b27be6e.png" alt="Pumba" width="200px">
+					</label>
+					<input class="radio-group__input" type="radio" name="hero" id="Pumba">
+				</div>
 			</div>
-			<button class="button--primary" type="button" id="start">Начать</button>
+			<div class="card__footer">
+				<button class="button--primary" type="button" id="start">Начать</button>
+			</div>
 		</form>
 	</div>
 	<div id="pause">Пауза</div>
