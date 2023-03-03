@@ -1,0 +1,14 @@
+.text-field {
+    display: grid;
+
+    &__label {
+        font-size: 1.1rem;
+        margin-bottom: 0.5em;
+    }
+
+    &__input {
+        padding: 1em 2.5em 1em 0.8em;
+        border-radius: 4px;
+        border: none;
+    }
+}
