@@ -1,0 +1,83 @@
+@keyframes fade {
+    0% {
+        background-size: 0% 0%;                   
+    }
+    50% {
+        background-size: 70% 50%;                    
+    }
+    100% {
+        background-size: 100% 100%;                  
+    }
+}
+
+@keyframes reverseFade {  // Added reverse keyframe 
+    0% {  // Reverse the values from the fade keyframe 
+        background-size: 100% 100%;                  
+    } 
+    50% {  // Reverse the values from the fade keyframe  
+        background-size: 70% 50%;                    
+    } 
+    100% {  // Reverse the values from the fade keyframe  
+        background-size: 0% 0%;                   
+    } 
+}
+
+@keyframes fadeFilter {
+    0% {
+        filter: blur(0px) grayscale(0);
+    }
+    100% {
+        filter: blur(5px) grayscale(1);
+    }
+}
+
+.radio-group {
+    &__label {
+        filter: grayscale(1);
+        cursor: pointer;
+        transition-duration: 250ms;
+
+        &:hover {
+            filter: grayscale(.5);
+        }        
+    }
+
+    &__input {
+        display: none;
+    }
+}
+
+.radio-group--active {
+    .radio-group__label {
+        filter: grayscale(0);
+        display: block;
+        position: relative;
+
+        & > img {
+            background-image: radial-gradient($primary 40%, transparent 70%);
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+            background-size: 100%;
+            animation: fade 250ms ease-out 1;
+        }
+    }
+}
+
+.radio-group--inactive {
+    .radio-group__label {
+        animation: fadeFilter 250ms ease-in 1;
+        filter: blur(5px) grayscale(1);
+
+        & > img {
+            background-image: radial-gradient($primary 40%, transparent 70%);
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+            background-size: 0%;
+            animation: reverseFade 250ms ease-in 1;
+        }
+
+        &:hover {
+            filter: blur(1px) grayscale(.5);
+        }
+    }
+}

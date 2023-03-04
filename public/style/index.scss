@@ -3,6 +3,7 @@
 @import './components/card.scss';
 @import './components/button.scss';
 @import './components/textField.scss';
+@import './components/radioGroup.scss';
 
 * {
     box-sizing: border-box;
@@ -28,7 +29,7 @@ ul {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, .5);
+    background-color: $main;
     z-index: 5;
 }
 

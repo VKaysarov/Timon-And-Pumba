@@ -3,6 +3,7 @@
     grid-template-rows: repeat(1fr, 3);
 
     &__body {
+        display: flex;
         margin: 1em 0;
     }
 

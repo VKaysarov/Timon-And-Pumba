@@ -35,6 +35,7 @@ name.addEventListener('input', function() {
     }
 })
 
+
 const selectHero = () => {
     const isTimon = elementTimon.checked ? Timon : null;
     const isPumba = elementPumba.checked ? Pumba : null;
@@ -42,7 +43,21 @@ const selectHero = () => {
     return isTimon || isPumba;
 }
 
-buttonStart.addEventListener('click', function() {
+elementTimon.addEventListener('change', (event) => {
+    event.target.parentNode.classList.remove('radio-group--inactive')
+    event.target.parentNode.classList.add('radio-group--active')
+    elementPumba.parentNode.classList.remove('radio-group--active')
+    elementPumba.parentNode.classList.add('radio-group--inactive')
+})
+
+elementPumba.addEventListener('change', (event) => {
+    event.target.parentNode.classList.remove('radio-group--inactive')
+    event.target.parentNode.classList.add('radio-group--active')
+    elementTimon.parentNode.classList.remove('radio-group--active')
+    elementTimon.parentNode.classList.add('radio-group--inactive')
+})
+
+buttonStart.addEventListener('click', () => {
     const hero = selectHero();
 
     bootstrap.style.display = 'none';
