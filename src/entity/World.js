@@ -8,5 +8,6 @@ export const World = {
     width,
     height,
     context,
+    distanceTraveled: 0,
     isGameover: false,
 }
