@@ -1,9 +1,11 @@
 import { World } from "../entity/World";
 import { BlockList } from "../entity/Block";
-import { Background } from "../entity/Background";
+import { GroundTile } from "../entity/GroundTile";
+import { Backgrounds } from "../entity/Background";
 import { Caterpillars } from "../entity/Caterpillar";
 import { UpdateSystem } from "./UpdateSystem";
 import { RenderSystem } from "./RenderSystem";
+import { ParallaxBackgroundSystem } from "./ParallaxBackgroundSystem";
 
 const elementPause = document.getElementById('pause');
 const elementGameover = document.getElementById('gameover');
@@ -25,9 +27,11 @@ export const AnimationSystem = (activeKey, hero) => {
 
     context.clearRect(0, 0, width, height);
 
-    RenderSystem([Background, hero]);
+    ParallaxBackgroundSystem([...Backgrounds, GroundTile], activeKey, hero);
+    RenderSystem([hero]);
     RenderSystem(Caterpillars);
     RenderSystem(BlockList);
+
     if (!activeKey['Escape']) {
         requestAnimationFrame(() => AnimationSystem(activeKey, hero));
     }

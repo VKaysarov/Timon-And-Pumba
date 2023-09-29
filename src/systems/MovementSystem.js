@@ -1,8 +1,8 @@
 import { World } from "../entity/World";
 import { BlockList } from "../entity/Block";
-import { Background } from "../entity/Background";
 import { Caterpillars } from "../entity/Caterpillar";
 import { collisions, handleConllision } from "../systems/CollisionSystem";
+import { FrameSystem } from "./FrameSystem";
 
 export const MovementSystem = (hero, activeKey) => {
     const { width, height } = World;
@@ -10,7 +10,7 @@ export const MovementSystem = (hero, activeKey) => {
     hero.FrameComponent.sprite = 0;
 
     if (activeKey['ArrowLeft'] && hero.digin == false) {
-        if (hero.PositionComponent.x1 <= width/2 && Background.PositionComponent.x1 < 0) {
+        if (hero.PositionComponent.x1 <= width/2) {
             BlockList.forEach(block => {
                 block.PositionComponent.x1 += 10;
             })
@@ -18,7 +18,6 @@ export const MovementSystem = (hero, activeKey) => {
                 caterpillar.PositionComponent.x1 += 10;
             })
             hero.vx = 0;
-            Background.PositionComponent.x1 += 10;
         } else {
             hero.vx = -10;
         }
@@ -34,7 +33,6 @@ export const MovementSystem = (hero, activeKey) => {
             Caterpillars.forEach(caterpillar => {
                 caterpillar.PositionComponent.x1 -= 10;
             })
-            Background.PositionComponent.x1 -= 10;
             hero.vx = 0;
         } else {;
             hero.vx = 10;
@@ -50,7 +48,6 @@ export const MovementSystem = (hero, activeKey) => {
             hero.FrameComponent.sprite = 130
             hero.jump = true
         } else if (hero.digin == true) {
-            hero.PositionComponent.y1 = height - 300
             hero.digin = false
         }
     } 
@@ -61,18 +58,8 @@ export const MovementSystem = (hero, activeKey) => {
             hero.digin = true
         }
     } 
-    // if (activeKey['ArrowLeft'] || activeKey['ArrowRight'] || activeKey['ArrowUp']) {
-        if (hero.FrameComponent.speedAnim < 3) {
-            hero.FrameComponent.speedAnim++;
-        } else {
-            hero.FrameComponent.speedAnim = 0;
-            if (hero.FrameComponent.currentFrame == hero.FrameComponent.frames) {
-                hero.FrameComponent.currentFrame = 1;
-            } else {
-                hero.FrameComponent.currentFrame++;
-            }
-        }
-    // }
+        FrameSystem(hero);
+        // FrameSystem(Background, 0.007);
     hero.vx *= 0.9;
     hero.PositionComponent.x1 += hero.vx;
     hero.PositionComponent.y1 += hero.vy;
@@ -103,8 +90,8 @@ export const MovementSystem = (hero, activeKey) => {
     if (hero.PositionComponent.x1 > width - hero.PositionComponent.x2) {
         hero.PositionComponent.x1 = width - hero.PositionComponent.x2                     
     }
-    if (hero.PositionComponent.y1 > height - 300 && hero.digin == false) {
-        hero.PositionComponent.y1 = height - 300
+    if (hero.PositionComponent.y1 > height - 250 && hero.digin == false) {
+        hero.PositionComponent.y1 = height - 250
         hero.jump = false
     }
 }

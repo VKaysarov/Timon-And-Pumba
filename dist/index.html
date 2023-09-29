@@ -2,56 +2,35 @@
 <html>
 <head>
 	<title>Game</title>
-	<style type="text/css">
-		body {
-			margin: 0;
-			padding: 0;
-		}
-		form {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-		}
-		ul {
-			list-style-type: none;
-		}
-		#bootstrap {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0, 0, 0, .5);
-			z-index: 5;
-		}
-		#pause, #gameover {
-			display: none;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			font-size: 30px;
-			color: #fff;
-			background-color: rgba(0, 0, 0, .5);
-		}
-	</style>
 <script defer src="bundle.js"></script></head>
 <body>
 	<div id="bootstrap">
-		<div>
-			<label for="Timon"><img src="Media/Timon/Timon_1.png" alt="Timon" width="200px"></label>
-			<input type="radio" name="hero" id="Timon">
-			<label for="Pumba"><img src="Media/Пумба/lion_king_PNG49.png" alt="Pumba" width="200px"></label>
-			<input type="radio" name="hero" id="Pumba">
-			<form>
-				<label for="name">Введите ваше имя:</label>
-				<input type="text" name="name" id="name">
-				<button type="button" id="start" disabled="true">Начать</button>
-			</form>
-		</div>
+		<form class="card">
+			<div class="card__header">
+				<div class="text-field">
+					<label class="text-field__label" for="name">Введите ваше имя:</label>
+					<input class="text-field__input" required type="text" name="name" placeholder="Nickname" id="name">
+				</div>
+			</div>
+			<div class="card__body">
+				<div class="radio-group">
+					<div class="select"></div>
+					<label class="radio-group__label" for="Timon">
+						<img src="Media/Timon/Timon_1.png" alt="Timon" width="200px">
+					</label>
+					<input class="radio-group__input" type="radio" name="hero" id="Timon">
+				</div>
+				<div class="radio-group">
+					<label class="radio-group__label" for="Pumba">
+						<img src="Media/Pumba/0c59c82dfa5b00271c6b1e7f3b27be6e.png" alt="Pumba" width="200px">
+					</label>
+					<input class="radio-group__input" type="radio" name="hero" id="Pumba">
+				</div>
+			</div>
+			<div class="card__footer">
+				<button class="button--primary" type="button" id="start">Начать</button>
+			</div>
+		</form>
 	</div>
 	<div id="pause">Пауза</div>
 	<div id="gameover">

@@ -16,7 +16,7 @@ export const Caterpillar = {
 
 export const generateCaterpillars = (blocks) => {
     const caterpillars = [];
-    const y1 = height - 300 - Caterpillar.height;
+    const y1 = height - 250 - Caterpillar.height;
     
     for (let i = 0; i < 1; i++) {
         const x1 = blocks[i].PositionComponent.x1 + Caterpillar.width / 2;

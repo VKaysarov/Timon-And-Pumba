@@ -15,8 +15,8 @@ const debug = true;
 let activeKey = [];
 
 addEventListener('resize', function() {
-    canvas.width = window.innerWidth - 5;  
-    canvas.height = window.innerHeight - 5;
+    canvas.width = window.innerWidth;  
+    canvas.height = window.innerHeight;
 })
 
 addEventListener('keydown', function(event) {

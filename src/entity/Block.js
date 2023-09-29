@@ -7,7 +7,7 @@ const { height } = World;
 
 export const Block = {
     AppearanceComponent: AppearanceComponent(blockUrlImg),
-    PositionComponent: PositionComponent(0, height - 300, 200, 100),
+    PositionComponent: PositionComponent(0, height - 250, 200, 100),
     vx: 0,
 }
 

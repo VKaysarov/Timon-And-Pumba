@@ -21,7 +21,7 @@ export function collisions(block1, block2) {
 }
 
 export function handleConllision(block1, block2) {
-    if (block1.PositionComponent.y1 >= World.height - 300) {
+    if (block1.PositionComponent.y1 >= World.height - 250) {
         if(block1.PositionComponent.x1 + block1.PositionComponent.x2 >= block2.PositionComponent.x1 && block1.direction == "right"){
             block1.PositionComponent.x1 = block2.PositionComponent.x1 - block1.PositionComponent.x2 - 1;
             block1.vx = 0;
