@@ -8,7 +8,7 @@ export const RenderSystem = (entities) => {
         const { x1, y1, x2, y2 } = entity.PositionComponent;
         const { img } = entity.AppearanceComponent;
 
-        // context.fillText(`entity.hp: ${entity.hp}`, x1, y1);
+        context.fillText(`x1: ${x1}`, x1, y1);
         if (entity.hasOwnProperty("hp") && entity.hp <= 0) {
             return;
         }
