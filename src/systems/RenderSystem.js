@@ -8,7 +8,7 @@ export const RenderSystem = (entities) => {
         const { x1, y1, x2, y2 } = entity.PositionComponent;
         const { img } = entity.AppearanceComponent;
 
-        context.fillText(`x1: ${x1}`, x1, y1);
+        // context.fillText(`x1: ${x1}`, x1, y1);
         if (entity.hasOwnProperty("hp") && entity.hp <= 0) {
             return;
         }
@@ -28,8 +28,12 @@ export const RenderSystem = (entities) => {
     //         context.fillRect(hero.PositionComponent.x1, hero.PositionComponent.y1, hero.PositionComponent.x2, hero.PositionComponent.y2);
     //     }
     // context.closePath();
-    context.fillStyle = 'black';
     context.font = '22px Verdana';
+    context.fillStyle = 'white';
+    context.strokeStyle = 'black';
+    context.lineWidth = 5;
+    context.strokeText('Счет: ' + World.count, 10, 30);
     context.fillText('Счет: ' + World.count, 10, 30);
-    context.fillText('Время: ' + Timer.m + ':' + Timer.s, 10, 50);
+    context.strokeText('Время: ' + Timer.m + ':' + Timer.s, 10, 55);
+    context.fillText('Время: ' + Timer.m + ':' + Timer.s, 10, 55);
 }
